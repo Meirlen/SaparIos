@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50AD12AA295F30CF00DC46C1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50AD12A9295F30CF00DC46C1 /* GoogleService-Info.plist */; };
+		50AD12AD295F373400DC46C1 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 50AD12AC295F373400DC46C1 /* FirebaseMessaging */; };
+		50AD12AF295F373400DC46C1 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 50AD12AE295F373400DC46C1 /* FirebaseDatabase */; };
 		CF381C29295F1AD300DD70E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF381C28295F1AD300DD70E1 /* AppDelegate.swift */; };
 		CF381C2B295F1AD300DD70E1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF381C2A295F1AD300DD70E1 /* SceneDelegate.swift */; };
 		CF381C2D295F1AD300DD70E1 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF381C2C295F1AD300DD70E1 /* MapViewController.swift */; };
@@ -46,6 +49,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		50AD12A9295F30CF00DC46C1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF381C25295F1AD300DD70E1 /* SaparTaxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SaparTaxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF381C28295F1AD300DD70E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF381C2A295F1AD300DD70E1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -68,10 +72,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50AD12AD295F373400DC46C1 /* FirebaseMessaging in Frameworks */,
 				CF381C49295F1E1700DD70E1 /* MapboxCoreMaps.xcframework in Frameworks */,
 				CF381C46295F1E1600DD70E1 /* MapboxCommon.xcframework in Frameworks */,
 				CF381C4B295F1E1900DD70E1 /* MapboxMaps.xcframework in Frameworks */,
 				CF381C4F295F1E1B00DD70E1 /* Turf.xcframework in Frameworks */,
+				50AD12AF295F373400DC46C1 /* FirebaseDatabase in Frameworks */,
 				CF381C4D295F1E1A00DD70E1 /* MapboxMobileEvents.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,6 +116,7 @@
 				CF381C2E295F1AD300DD70E1 /* Main.storyboard */,
 				CF381C31295F1AD400DD70E1 /* Assets.xcassets */,
 				CF381C33295F1AD400DD70E1 /* LaunchScreen.storyboard */,
+				50AD12A9295F30CF00DC46C1 /* GoogleService-Info.plist */,
 				CF381C36295F1AD400DD70E1 /* Info.plist */,
 			);
 			path = SaparTaxi;
@@ -141,6 +148,10 @@
 			dependencies = (
 			);
 			name = SaparTaxi;
+			packageProductDependencies = (
+				50AD12AC295F373400DC46C1 /* FirebaseMessaging */,
+				50AD12AE295F373400DC46C1 /* FirebaseDatabase */,
+			);
 			productName = SaparTaxi;
 			productReference = CF381C25295F1AD300DD70E1 /* SaparTaxi.app */;
 			productType = "com.apple.product-type.application";
@@ -169,6 +180,9 @@
 				Base,
 			);
 			mainGroup = CF381C1C295F1AD300DD70E1;
+			packageReferences = (
+				50AD12AB295F373400DC46C1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = CF381C26295F1AD300DD70E1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -184,6 +198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF381C35295F1AD400DD70E1 /* LaunchScreen.storyboard in Resources */,
+				50AD12AA295F30CF00DC46C1 /* GoogleService-Info.plist in Resources */,
 				CF381C32295F1AD400DD70E1 /* Assets.xcassets in Resources */,
 				CF381C30295F1AD300DD70E1 /* Main.storyboard in Resources */,
 			);
@@ -356,7 +371,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -386,7 +401,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -422,6 +437,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		50AD12AB295F373400DC46C1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		50AD12AC295F373400DC46C1 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50AD12AB295F373400DC46C1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		50AD12AE295F373400DC46C1 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50AD12AB295F373400DC46C1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CF381C1D295F1AD300DD70E1 /* Project object */;
 }
