@@ -13,7 +13,35 @@
 		CF381C30295F1AD300DD70E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF381C2E295F1AD300DD70E1 /* Main.storyboard */; };
 		CF381C32295F1AD400DD70E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF381C31295F1AD400DD70E1 /* Assets.xcassets */; };
 		CF381C35295F1AD400DD70E1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF381C33295F1AD400DD70E1 /* LaunchScreen.storyboard */; };
+		CF381C46295F1E1600DD70E1 /* MapboxCommon.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF381C3D295F1D5400DD70E1 /* MapboxCommon.xcframework */; };
+		CF381C47295F1E1600DD70E1 /* MapboxCommon.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CF381C3D295F1D5400DD70E1 /* MapboxCommon.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CF381C49295F1E1700DD70E1 /* MapboxCoreMaps.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF381C3F295F1D5900DD70E1 /* MapboxCoreMaps.xcframework */; };
+		CF381C4A295F1E1700DD70E1 /* MapboxCoreMaps.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CF381C3F295F1D5900DD70E1 /* MapboxCoreMaps.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CF381C4B295F1E1900DD70E1 /* MapboxMaps.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF381C40295F1D5900DD70E1 /* MapboxMaps.xcframework */; };
+		CF381C4C295F1E1900DD70E1 /* MapboxMaps.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CF381C40295F1D5900DD70E1 /* MapboxMaps.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CF381C4D295F1E1A00DD70E1 /* MapboxMobileEvents.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF381C3E295F1D5400DD70E1 /* MapboxMobileEvents.xcframework */; };
+		CF381C4E295F1E1A00DD70E1 /* MapboxMobileEvents.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CF381C3E295F1D5400DD70E1 /* MapboxMobileEvents.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CF381C4F295F1E1B00DD70E1 /* Turf.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF381C3C295F1D5200DD70E1 /* Turf.xcframework */; };
+		CF381C50295F1E1B00DD70E1 /* Turf.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CF381C3C295F1D5200DD70E1 /* Turf.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CF381C48295F1E1600DD70E1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CF381C4A295F1E1700DD70E1 /* MapboxCoreMaps.xcframework in Embed Frameworks */,
+				CF381C4E295F1E1A00DD70E1 /* MapboxMobileEvents.xcframework in Embed Frameworks */,
+				CF381C47295F1E1600DD70E1 /* MapboxCommon.xcframework in Embed Frameworks */,
+				CF381C50295F1E1B00DD70E1 /* Turf.xcframework in Embed Frameworks */,
+				CF381C4C295F1E1900DD70E1 /* MapboxMaps.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CF381C25295F1AD300DD70E1 /* SaparTaxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SaparTaxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,6 +52,11 @@
 		CF381C31295F1AD400DD70E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CF381C34295F1AD400DD70E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CF381C36295F1AD400DD70E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CF381C3C295F1D5200DD70E1 /* Turf.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Turf.xcframework; sourceTree = "<group>"; };
+		CF381C3D295F1D5400DD70E1 /* MapboxCommon.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MapboxCommon.xcframework; sourceTree = "<group>"; };
+		CF381C3E295F1D5400DD70E1 /* MapboxMobileEvents.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MapboxMobileEvents.xcframework; sourceTree = "<group>"; };
+		CF381C3F295F1D5900DD70E1 /* MapboxCoreMaps.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MapboxCoreMaps.xcframework; sourceTree = "<group>"; };
+		CF381C40295F1D5900DD70E1 /* MapboxMaps.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = MapboxMaps.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +64,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF381C49295F1E1700DD70E1 /* MapboxCoreMaps.xcframework in Frameworks */,
+				CF381C46295F1E1600DD70E1 /* MapboxCommon.xcframework in Frameworks */,
+				CF381C4B295F1E1900DD70E1 /* MapboxMaps.xcframework in Frameworks */,
+				CF381C4F295F1E1B00DD70E1 /* Turf.xcframework in Frameworks */,
+				CF381C4D295F1E1A00DD70E1 /* MapboxMobileEvents.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +78,11 @@
 		CF381C1C295F1AD300DD70E1 = {
 			isa = PBXGroup;
 			children = (
+				CF381C3D295F1D5400DD70E1 /* MapboxCommon.xcframework */,
+				CF381C3F295F1D5900DD70E1 /* MapboxCoreMaps.xcframework */,
+				CF381C40295F1D5900DD70E1 /* MapboxMaps.xcframework */,
+				CF381C3E295F1D5400DD70E1 /* MapboxMobileEvents.xcframework */,
+				CF381C3C295F1D5200DD70E1 /* Turf.xcframework */,
 				CF381C27295F1AD300DD70E1 /* SaparTaxi */,
 				CF381C26295F1AD300DD70E1 /* Products */,
 			);
@@ -77,6 +120,7 @@
 				CF381C21295F1AD300DD70E1 /* Sources */,
 				CF381C22295F1AD300DD70E1 /* Frameworks */,
 				CF381C23295F1AD300DD70E1 /* Resources */,
+				CF381C48295F1E1600DD70E1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -302,7 +346,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sapar.taxi.SaparTaxi;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sapar.taxi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -332,7 +376,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sapar.taxi.SaparTaxi;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sapar.taxi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
