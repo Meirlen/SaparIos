@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		506CC68C29603D7400887738 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506CC68929603D7400887738 /* Helpers.swift */; };
+		506CC68D29603D7400887738 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506CC68A29603D7400887738 /* NotificationService.swift */; };
+		506CC6912960415B00887738 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506CC6902960415B00887738 /* SearchViewController.swift */; };
 		50AD12AA295F30CF00DC46C1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50AD12A9295F30CF00DC46C1 /* GoogleService-Info.plist */; };
 		50AD12AD295F373400DC46C1 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 50AD12AC295F373400DC46C1 /* FirebaseMessaging */; };
 		50AD12AF295F373400DC46C1 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 50AD12AE295F373400DC46C1 /* FirebaseDatabase */; };
@@ -49,6 +52,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		506CC68929603D7400887738 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = SaparTaxi/Helper/Helpers.swift; sourceTree = SOURCE_ROOT; };
+		506CC68A29603D7400887738 /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationService.swift; path = SaparTaxi/Helper/NotificationService.swift; sourceTree = SOURCE_ROOT; };
+		506CC6902960415B00887738 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = SaparTaxi/SearchViewController.swift; sourceTree = SOURCE_ROOT; };
 		50AD12A9295F30CF00DC46C1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CF381C25295F1AD300DD70E1 /* SaparTaxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SaparTaxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF381C28295F1AD300DD70E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +91,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		506CC68829603CFD00887738 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				506CC68A29603D7400887738 /* NotificationService.swift */,
+				506CC68929603D7400887738 /* Helpers.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		CF381C1C295F1AD300DD70E1 = {
 			isa = PBXGroup;
 			children = (
@@ -112,7 +127,9 @@
 				CF381C51295F2F0000DD70E1 /* Services */,
 				CF381C28295F1AD300DD70E1 /* AppDelegate.swift */,
 				CF381C2A295F1AD300DD70E1 /* SceneDelegate.swift */,
+				506CC68829603CFD00887738 /* Helper */,
 				CF381C2C295F1AD300DD70E1 /* MapViewController.swift */,
+				506CC6902960415B00887738 /* SearchViewController.swift */,
 				CF381C2E295F1AD300DD70E1 /* Main.storyboard */,
 				CF381C31295F1AD400DD70E1 /* Assets.xcassets */,
 				CF381C33295F1AD400DD70E1 /* LaunchScreen.storyboard */,
@@ -212,6 +229,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF381C2D295F1AD300DD70E1 /* MapViewController.swift in Sources */,
+				506CC68C29603D7400887738 /* Helpers.swift in Sources */,
+				506CC6912960415B00887738 /* SearchViewController.swift in Sources */,
+				506CC68D29603D7400887738 /* NotificationService.swift in Sources */,
 				CF381C55295F2F3400DD70E1 /* GeocodingService.swift in Sources */,
 				CF381C29295F1AD300DD70E1 /* AppDelegate.swift in Sources */,
 				CF381C53295F2F2300DD70E1 /* LocationService.swift in Sources */,
