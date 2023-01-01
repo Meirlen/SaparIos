@@ -40,6 +40,7 @@ class MapViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
         updateLocation()        
     }
     
@@ -53,6 +54,14 @@ class MapViewController: UIViewController {
         let vc = navigationController
         if let screen = SearchViewController.loadFromStoryboard(name: "Main") {
             vc?.pushViewController(screen, animated: true)
+        }
+    }
+    
+    @IBAction func peshScreenPayment() {
+        let vc = navigationController
+        
+        if let screen = PaymentViewController.loadFromStoryboard(name: "Main") {
+            vc?.pushViewController(screen, animated: false)
         }
     }
     
