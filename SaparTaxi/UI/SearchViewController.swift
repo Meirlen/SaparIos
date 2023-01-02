@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+@objc(SearchViewController)
 class SearchViewController: UIViewController {    
     
     override func viewDidLoad() {

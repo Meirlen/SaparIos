@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+@objc(PaymentViewController)
 class PaymentViewController: UIViewController {
     
     @IBOutlet weak var titleSwichLabel: UILabel?

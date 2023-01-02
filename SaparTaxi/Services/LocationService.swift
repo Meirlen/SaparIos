@@ -19,11 +19,13 @@ class LocationService: NSObject {
         return result
     }()
     
+    private var completion: LocationBlock?
+    
+    //MARK: -
+    
     var permission: CLAuthorizationStatus {
         return manager.authorizationStatus
     }
-    
-    private var completion: LocationBlock?
     
     func requestPermission() {
         if permission == .notDetermined {
