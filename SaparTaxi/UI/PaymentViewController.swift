@@ -11,6 +11,7 @@ import UIKit
 @objc(PaymentViewController)
 class PaymentViewController: UIViewController {
     
+    @IBOutlet weak var mainView: UIView?
     @IBOutlet weak var titleSwichLabel: UILabel?
     @IBOutlet weak var companionSwich: UISwitch?
     @IBOutlet weak var addCompanionView: UIView?
@@ -21,14 +22,13 @@ class PaymentViewController: UIViewController {
     var amountCompanion = 1
     
     override func viewDidLoad() {
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = UIColor.clear
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        navigationController?.isNavigationBarHidden = false
-        
-        navigationItem.leftBarButtonItem = createBackButton()
+        mainView?.addSubview(createBackButton())
     }
     
     @IBAction func companionIsActiv(_ sender: UISwitch) {
@@ -36,10 +36,10 @@ class PaymentViewController: UIViewController {
         addCompanionView?.isHidden = !companionSwichIsOn
         titleSwichLabel?.text = companionSwichIsOn == false ? "Включить режим попутчика" : "Режим попутчика активен"
     }
-    
+        
     @IBAction func amountReduce(_ sender: UIButton) {
         if amountCompanion <= 2 {
-            minusButton?.isEnabled = false
+                minusButton?.isEnabled = false
         }
         plusButton?.isEnabled = true
         amountCompanion -= 1
@@ -54,5 +54,4 @@ class PaymentViewController: UIViewController {
         amountCompanion += 1
         amountLabel?.text = String(amountCompanion)
     }
-    
 }

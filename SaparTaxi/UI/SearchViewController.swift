@@ -11,14 +11,15 @@ import UIKit
 @objc(SearchViewController)
 class SearchViewController: UIViewController {    
     
+    @IBOutlet weak var mainView: UIView?
+    
     override func viewDidLoad() {
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = UIColor.clear
-        
-        navigationController?.isNavigationBarHidden = false
-        
-        navigationItem.leftBarButtonItem = createBackButton()
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        mainView?.addSubview(createBackButton())
     }
 }

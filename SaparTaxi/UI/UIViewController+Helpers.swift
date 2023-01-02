@@ -13,11 +13,11 @@ extension UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    func createBackButton(selector: Selector? = nil) -> UIBarButtonItem {
+    func createBackButton(selector: Selector? = nil) -> UIButton {
         return createButton(img: UIImage(systemName: "arrow.backward"), selector: selector ?? #selector(back))
     }
     
-    func createButton(img: UIImage?, selector: Selector) -> UIBarButtonItem {
+    func createButton(img: UIImage?, selector: Selector) -> UIButton {
         let button = UIButton(type: .custom)
         button.setTitle("", for: .normal)
         button.setImage(img, for: .normal)
@@ -30,9 +30,9 @@ extension UIViewController {
 
         button.layer.cornerRadius = 20
         button.backgroundColor = UIColor.white
-        button.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        button.frame = CGRect(x: 20, y: 10, width: 40, height: 40)
         button.addTarget(self, action: selector, for: UIControl.Event.touchUpInside)
-        let barButton = UIBarButtonItem(customView: button)
-        return barButton
+
+        return button
     }    
 }
