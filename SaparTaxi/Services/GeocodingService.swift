@@ -41,6 +41,12 @@ class GeocodingService: NSObject {
     }
 }
 
+struct Place {
+    var name: String
+    var desc: String
+    var lat: Double
+    var lon: Double
+}
 
 extension CLPlacemark {
     var fullAddress: String? {

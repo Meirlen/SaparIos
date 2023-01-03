@@ -76,7 +76,7 @@ class MapViewController: UIViewController {
         updateLocation()        
     }
     
-    //MARK: -
+    //MARK: - Actions
     
     @IBAction func getFreshLocation() {
         updateLocation()
@@ -130,7 +130,7 @@ class MapViewController: UIViewController {
         let coord = mapView.mapboxMap.coordinate(for: mapPoint)
         updateCoordinate(coord: coord, moveCamera: false)
     }
-
+    
     //MARK: - Bottom bar
     
     private func setupBarView() {

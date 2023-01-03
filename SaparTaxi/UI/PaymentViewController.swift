@@ -11,7 +11,9 @@ import UIKit
 @objc(PaymentViewController)
 class PaymentViewController: UIViewController {
     
+    @IBOutlet weak var topConstr: NSLayoutConstraint?
     @IBOutlet weak var mainView: UIView?
+    @IBOutlet weak var priceSlider: UISlider?
     @IBOutlet weak var titleSwichLabel: UILabel?
     @IBOutlet weak var companionSwich: UISwitch?
     @IBOutlet weak var addCompanionView: UIView?
@@ -31,9 +33,19 @@ class PaymentViewController: UIViewController {
         mainView?.addSubview(createBackButton())
     }
     
+    @IBAction func changePrice(_ sender: UISlider) {
+        let step: Float = 0.1
+        let roundedValue = round(sender.value / step) * step
+        sender.value = roundedValue
+    }
+    
     @IBAction func companionIsActiv(_ sender: UISwitch) {
         guard let companionSwichIsOn = companionSwich?.isOn else { return }
-        addCompanionView?.isHidden = !companionSwichIsOn
+        self.topConstr?.constant = companionSwichIsOn ? 50 : 8
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }  
+        
         titleSwichLabel?.text = companionSwichIsOn == false ? "Включить режим попутчика" : "Режим попутчика активен"
     }
         
