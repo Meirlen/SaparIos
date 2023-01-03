@@ -12,6 +12,11 @@ struct Location {
     let address: String
 }
 
+enum CarType {
+    case standard
+    case comfort
+}
+
 enum OrderState {
     case new
     case search
@@ -25,6 +30,7 @@ class Order: NSObject {
     
     var startLocation: Location?
     var destinations = [Location]()
+    var type = CarType.standard
     var price: Double = 0
     
     var driver: String?

@@ -20,12 +20,40 @@ enum State {
 class MapViewController: UIViewController {
     
     @IBOutlet weak var barView: UIView?
-    @IBOutlet weak var heightInfoView: NSLayoutConstraint?    
+    @IBOutlet weak var heightInfoView: NSLayoutConstraint?
+    
+    @IBOutlet weak var pinView: UIImageView?
+    @IBOutlet weak var addressLabel: UILabel?
+    @IBOutlet weak var addressActivity: UIActivityIndicatorView?
 
     private var mapView: MapView!
+    
+    private var coordinate: CLLocationCoordinate2D?
+    private func updateCoordinate(coord: CLLocationCoordinate2D, moveCamera: Bool) {
+        coordinate = coord
+        if moveCamera {
+            let frame = pinView?.superview?.frame ?? view.bounds
+            let padding = UIEdgeInsets(top: frame.minY, left: 0, bottom: view.bounds.maxY - frame.maxY, right: 0)
+            let options = CameraOptions(center: coordinate, padding: padding, zoom: 15)
+            mapView.mapboxMap.setCamera(to: options)
+        }
+        geocodeCurrentCoordinate()
+    }
+    private var coordinateTimer: Timer? {
+        didSet {
+            oldValue?.invalidate()
+        }
+    }
+    
     var state: State = .open
     var runningAnimators: [UIViewPropertyAnimator] = []
     var viewOffset: CGFloat = 326
+    
+    //MARK: -
+    
+    deinit {
+        coordinateTimer = nil
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,9 +63,13 @@ class MapViewController: UIViewController {
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.insertSubview(mapView, at: 0)
         
+        mapView.mapboxMap.onEvery(event: .cameraChanged, handler: { [weak self] event in
+            self?.setupCoordinateTimer()
+        })
+        
         setupBarView()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
@@ -51,30 +83,64 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func pushScreenSearch() {
-        let vc = navigationController
         if let screen = SearchViewController.loadFromStoryboard(name: "Main") {
-            vc?.pushViewController(screen, animated: true)
+            navigationController?.pushViewController(screen, animated: true)
         }
     }
     
-    @IBAction func peshScreenPayment() {
-        let vc = navigationController
-        
+    @IBAction func pushScreenPayment() {
         if let screen = PaymentViewController.loadFromStoryboard(name: "Main") {
-            vc?.pushViewController(screen, animated: false)
+            navigationController?.pushViewController(screen, animated: false)
         }
     }
     
+    //MARK: -
     
     private func updateLocation() {
         LocationService.shared.requestLocation { [weak self] location in
             if let coord = location?.coordinate {
-                let options = CameraOptions(center: coord)
-                self?.mapView.mapboxMap.setCamera(to: options)
+                self?.updateCoordinate(coord: coord, moveCamera: true)
             }
         }
     }
     
+    private func geocodeCurrentCoordinate() {
+        guard let coordinate = coordinate else { return }
+        addressLabel?.isHidden = true
+        addressActivity?.isHidden = false
+        GeocodingService.shared.getAddress(coordinate: coordinate) { [weak self] coord, address in
+            guard let self = self, self.coordinate == coord else { return }
+            self.addressLabel?.text = address ?? "неизвестное место"
+            self.addressLabel?.isHidden = false
+            self.addressActivity?.isHidden = true
+        }
+    }
+    
+    private func setupCoordinateTimer() {
+        coordinateTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [weak self] timer in
+            self?.obtainCoordinateUnderPin()
+        })
+    }
+    
+    private func obtainCoordinateUnderPin() {
+        guard let pinView = pinView, let pinContainer = pinView.superview else { return }
+        
+        let point = CGPoint(x: pinView.frame.midX, y: pinView.frame.maxY)
+        let mapPoint = mapView.convert(point, from: pinContainer)
+        let coord = mapView.mapboxMap.coordinate(for: mapPoint)
+        updateCoordinate(coord: coord, moveCamera: false)
+    }
+
+    //MARK: - Bottom bar
+    
+    private func setupBarView() {
+        self.heightInfoView?.constant = viewOffset
+        self.view.layoutIfNeeded()
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.onDrag(_:)))
+        self.barView?.addGestureRecognizer(panGesture)
+    }
+
     func animateView(to state: State, duration: TimeInterval )  {
         
         guard runningAnimators.isEmpty else { return }
@@ -95,19 +161,12 @@ class MapViewController: UIViewController {
         basicAnimator.addCompletion { (animator) in
             self.runningAnimators.removeAll()
             self.state = self.state.apposite
+            self.obtainCoordinateUnderPin()
         }
         
         runningAnimators.append(basicAnimator)
     }
     
-    func setupBarView() {
-        self.heightInfoView?.constant = viewOffset
-        self.view.layoutIfNeeded()
-        
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.onDrag(_:)))
-        self.barView?.addGestureRecognizer(panGesture)
-    }
-
     @objc func onDrag(_ gesture: UIPanGestureRecognizer) {
         switch gesture.state {
         case .began:
