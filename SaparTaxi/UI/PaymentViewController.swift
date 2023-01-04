@@ -24,7 +24,6 @@ class PaymentService {
             completion?(result)
         }
     }
-    
 }
 
 @objc(PaymentViewController)
@@ -42,9 +41,14 @@ class PaymentViewController: UIViewController {
     @IBOutlet weak var amountLabel: UILabel?
     @IBOutlet weak var minusButton: UIButton?
     @IBOutlet weak var plusButton: UIButton?
+    @IBOutlet weak var darkenedView: UIView?
+    @IBOutlet weak var allTaxiTableView: UITableView?
+    @IBOutlet weak var heightViewTableView: NSLayoutConstraint?
     
+    let heightTableView: CGFloat = 300
     var amountCompanion = 1
     var averagePrice: Double = 0.0
+    let indentifire = "TaxiCell"
     
     var prices = [Price]() {
         didSet {
@@ -52,6 +56,7 @@ class PaymentViewController: UIViewController {
             averagePriceLabel?.text = String(averagePrice)
             setParamSlider()
             loadPriceView?.isHidden = true
+            allTaxiTableView?.reloadData()
         }
     }
     
@@ -63,7 +68,7 @@ class PaymentViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        heightViewTableView?.constant = 0
         mainView?.addSubview(createBackButton())
     }
     
@@ -129,4 +134,50 @@ class PaymentViewController: UIViewController {
         amountCompanion += 1
         amountLabel?.text = String(amountCompanion)
     }
+    
+    @IBAction func showAllTaxis(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.darkenedView?.alpha = 1
+            self.darkenedView?.isHidden = false
+            self.heightViewTableView?.constant = self.heightTableView
+            self.view.layoutIfNeeded()
+            
+        })
+    }
+    
+    @IBAction func tapOnDarkenedView(_ sender: UITapGestureRecognizer) {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.darkenedView?.alpha = 0
+            self.heightViewTableView?.constant = 0
+            self.view.layoutIfNeeded()
+        }, completion:  {
+           (value: Bool) in
+            self.darkenedView?.isHidden = true
+        })
+    }
+}
+
+extension PaymentViewController: UITableViewDataSource, UITableViewDelegate{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return prices.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: indentifire, for: indexPath)
+        let taxiCell = cell as? TaxiCell
+        
+        let price = prices[indexPath.row]
+        taxiCell?.nameTaxiLabel?.text = price.name
+        taxiCell?.amountButton?.titleLabel?.text = String(price.price)
+        taxiCell?.amountButton?.setTitle(String(price.price), for: .normal)
+
+        return cell
+    }
+}
+
+class TaxiCell: UITableViewCell {
+    @IBOutlet weak var iconTaxiImage: UIImageView?
+    @IBOutlet weak var nameTaxiLabel: UILabel?
+    @IBOutlet weak var typeLabel: UILabel?
+    @IBOutlet weak var amountButton: UIButton?
 }

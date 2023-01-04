@@ -50,7 +50,8 @@ class MapViewController: UIViewController {
     
     var state: State = .open
     var runningAnimators: [UIViewPropertyAnimator] = []
-    var viewOffset: CGFloat = 326
+    let viewOffset: CGFloat = 326
+    let heightTableView: CGFloat = 200
     
     //MARK: -
     
@@ -76,6 +77,7 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
+        heightViewTableView?.constant = 0
         updateLocation()        
     }
     
@@ -190,9 +192,12 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func showAllAddresses(_ sender: UIButton) {
-        darkenedView?.isHidden = false
-        darkenedView?.alpha = 1
-        heightViewTableView?.constant = 200
+        UIView.animate(withDuration: 0.5, animations: {
+            self.darkenedView?.alpha = 1
+            self.darkenedView?.isHidden = false
+            self.heightViewTableView?.constant = self.heightTableView
+            self.view.layoutIfNeeded()
+        })
     }
     
     
