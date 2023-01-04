@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MapViewController.swift
 //  SaparTaxi
 //
 //  Created by Vova Home on 30.12.2022.
@@ -24,8 +24,8 @@ class MapViewController: UIViewController {
     
     @IBOutlet weak var pinView: UIImageView?
     @IBOutlet weak var addressLabel: UILabel?
-    @IBOutlet weak var addressActivity: UIActivityIndicatorView?
     
+    @IBOutlet weak var addressActivity: UIActivityIndicatorView?
     @IBOutlet weak var darkenedView: UIView?
     @IBOutlet weak var heightViewTableView: NSLayoutConstraint?    
 
@@ -188,6 +188,13 @@ class MapViewController: UIViewController {
             break
         }
     }
+    
+    @IBAction func showAllAddresses(_ sender: UIButton) {
+        darkenedView?.isHidden = false
+        darkenedView?.alpha = 1
+        heightViewTableView?.constant = 200
+    }
+    
     
     //MARK: - 
     
