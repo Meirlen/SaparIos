@@ -44,7 +44,7 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let coordinate = coordinate else { return }
-        GeocodingService.shared.getPlaces(string: searchText, center: coordinate) { [weak self] (locations) in
+        GeocodingService.getPlaces(string: searchText, center: coordinate) { [weak self] (locations) in
             self?.addresses = locations
         }
     }
@@ -62,7 +62,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate{
         let address = addresses[indexPath.row]
         
         resultCell?.addressLabel?.text = address.address
-        resultCell?.addressDescrLabel?.text = address.desc
+        resultCell?.fullAddressLabel?.text = address.desc
         
         return cell
     }

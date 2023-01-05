@@ -133,8 +133,6 @@ class MapViewController: UIViewController {
     @IBAction func pushScreenSearch() {
         if let screen = SearchViewController.loadFromStoryboard(name: "Main") {
             screen.completion = { [weak self] address in
-                guard let address = address else { return }
-                
                 if self?.startAddress == nil {
                     self?.startAddress = address
                 }
@@ -143,7 +141,7 @@ class MapViewController: UIViewController {
                 }
             }
             screen.coordinate = coordinate
-            vc?.pushViewController(screen, animated: true)
+            navigationController?.pushViewController(screen, animated: true)
         }
     }
     
@@ -167,7 +165,7 @@ class MapViewController: UIViewController {
         guard let coordinate = coordinate else { return }
         addressLabel?.isHidden = true
         addressActivity?.isHidden = false
-        GeocodingService.shared.getAddress(coordinate: coordinate) { [weak self] coord, address in
+        GeocodingService.getAddress(coordinate: coordinate) { [weak self] coord, address in
             guard let self = self, self.coordinate == coord else { return }
             self.addressLabel?.text = address ?? "неизвестное место"
             self.addressLabel?.isHidden = false

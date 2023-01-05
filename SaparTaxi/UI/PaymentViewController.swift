@@ -14,22 +14,6 @@ struct ResultPrice {
     var price: Double?
 }
 
-struct Price {
-    var name: String
-    var price: Double
-}
-
-class PaymentService {
-    static func getPayment(coord: [Double], completion:(([Price])->Void)?) {
-        var result = [Price]()
-        result.append(Price(name: "yandex", price: 200))
-        result.append(Price(name: "bolt", price: 100))
-        result.append(Price(name: "uber", price: 300))
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            completion?(result)
-        }
-    }
-}
 
 @objc(PaymentViewController)
 class PaymentViewController: UIViewController {
@@ -56,7 +40,7 @@ class PaymentViewController: UIViewController {
     var resultPrice: Double = 0.0
     let indentifire = "TaxiCell"
     
-    var prices = [Price]() {
+    var prices = [TaxiService]() {
         didSet {
             getAveragePrice()
             averagePriceLabel?.text = String(averagePrice)
@@ -68,8 +52,13 @@ class PaymentViewController: UIViewController {
     
     var completion: ((ResultPrice?)->Void)?
     
+    //MARK: -
+    
     override func viewDidLoad() {
-        PaymentService.getPayment(coord: [0.1, 3.2]) { [weak self] prices in
+        super.viewDidLoad()
+        let loc1 = Location(coordinate: CLLocationCoordinate2D(latitude: 73.13254547, longitude: 49.77490997), address: "улица Язева, 10", desc: "улица Язева, 10")
+        let loc2 = Location(coordinate: CLLocationCoordinate2D(latitude: 73.08615875, longitude: 49.80342102), address: "ЦУМ", desc: "ЦУМ")
+        ApiService.estimateOrder(locations: [loc1, loc2]) { [weak self] prices in
             self?.prices = prices
         }
     }
@@ -84,6 +73,8 @@ class PaymentViewController: UIViewController {
         super.viewWillAppear(animated)
         loadPriceView?.isHidden = false
     }
+    
+    //MARK: -
     
     func getAveragePrice() {
         var sumPrices = 0.0
