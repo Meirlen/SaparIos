@@ -14,22 +14,33 @@ class GeocodingService: NSObject {
     
     func getAddress(coordinate: CLLocationCoordinate2D, completion:((CLLocationCoordinate2D, String?)->Void)?) {
         //TODO: Cache & round
-        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        geocoder.reverseGeocodeLocation(location) { placemarks, error in
-            guard let placemarks = placemarks else {
-                completion?(coordinate, nil)
+        let dict = ["lat": coordinate.latitude, "lon": coordinate.longitude]
+        let data = try? JSONSerialization.data(withJSONObject: dict)
+        
+        guard let url = URL(string: "http://165.22.13.172:8000/order/geocode"), let data = data else {
+            completion?(coordinate, nil)
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.allHTTPHeaderFields = ["Content-Type": "application/json"]
+        request.httpBody = data
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion?(coordinate, nil)
+                }
                 return
             }
-            var result: String?
-            for pl in placemarks {
-                if let addr = pl.fullAddress {
-                    result = addr
-                    break
-                }
+            
+            let decoder = JSONDecoder()
+            let response = try? decoder.decode([String:String].self, from: data)
+            let addr = response?["text"]
+            DispatchQueue.main.async {
+                completion?(coordinate, addr)
             }
-            completion?(coordinate, result)
         }
-        
+        task.resume()
     }
     
     func getPlaces(string: String, center: CLLocationCoordinate2D, completion:(([Location])->Void)?) {
@@ -50,7 +61,10 @@ class GeocodingService: NSObject {
         let request = URLRequest(url: url)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, var str = String(data: data, encoding: .utf8) else {
-                completion?([])
+                DispatchQueue.main.async {
+                    completion?([])
+                }
+                
                 return
             }
             str.removeFirst(14) //suggest.apply(
@@ -58,11 +72,15 @@ class GeocodingService: NSObject {
              
             let decoder = JSONDecoder()
             let response = try? decoder.decode(PlacesResponse.self, from: Data(str.utf8))
-            completion?(response?.locations ?? [])
+            DispatchQueue.main.async {
+                completion?(response?.locations ?? [])
+            }
         }
         task.resume()
     }
 }
+
+//MARK: -
 
 struct PlacesResponse: Codable {
     var part: String
