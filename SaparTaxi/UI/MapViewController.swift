@@ -20,6 +20,7 @@ enum State {
 class MapViewController: UIViewController {
     
     @IBOutlet weak var barView: UIView?
+    @IBOutlet weak var infoBarView: UIView?
     @IBOutlet weak var heightInfoView: NSLayoutConstraint?
     
     @IBOutlet weak var pinView: UIImageView?
@@ -50,7 +51,7 @@ class MapViewController: UIViewController {
     
     var state: State = .open
     var runningAnimators: [UIViewPropertyAnimator] = []
-    let viewOffset: CGFloat = 326
+    let viewOffset: CGFloat = 0
     let heightTableView: CGFloat = 200
     
     //MARK: -
@@ -77,6 +78,8 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
+        guard let infoBarViewHeight = infoBarView?.frame.height else { return }
+        viewOffset = infoBarViewHeight
         heightViewTableView?.constant = 0
         updateLocation()        
     }
