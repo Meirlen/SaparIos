@@ -915,6 +915,9 @@
                                                         <integer key="value" value="25"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="getPriceOnMapViewController:" destination="Kpk-Kw-asX" eventType="touchUpInside" id="9Be-qn-4gV"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>

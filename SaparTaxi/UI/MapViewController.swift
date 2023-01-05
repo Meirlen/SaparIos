@@ -192,7 +192,7 @@ class MapViewController: UIViewController {
         default:
             break
         }
-    }
+    }    
     
     @IBAction func showAllAddresses(_ sender: UIButton) {
         UIView.animate(withDuration: 0.5, animations: {

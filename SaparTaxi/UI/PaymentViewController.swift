@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 import CoreLocation
 
+struct ResultPrice {
+    var amountCompanion: Int?
+    var price: Double?
+}
+
 struct Price {
     var name: String
     var price: Double
@@ -48,6 +53,7 @@ class PaymentViewController: UIViewController {
     let heightTableView: CGFloat = 300
     var amountCompanion = 1
     var averagePrice: Double = 0.0
+    var resultPrice: Double = 0.0
     let indentifire = "TaxiCell"
     
     var prices = [Price]() {
@@ -59,6 +65,8 @@ class PaymentViewController: UIViewController {
             allTaxiTableView?.reloadData()
         }
     }
+    
+    var completion: ((ResultPrice?)->Void)?
     
     override func viewDidLoad() {
         PaymentService.getPayment(coord: [0.1, 3.2]) { [weak self] prices in
@@ -104,6 +112,7 @@ class PaymentViewController: UIViewController {
         else {
             titleSliderLabel?.text = "ВАША ЦЕНА:"
         }
+        resultPrice = Double(sender.value)
         averagePriceLabel?.text = String(sender.value)
     }
     
@@ -133,6 +142,13 @@ class PaymentViewController: UIViewController {
         minusButton?.isEnabled = true
         amountCompanion += 1
         amountLabel?.text = String(amountCompanion)
+    }
+    
+    @IBAction func getPriceOnMapViewController(_ sender: UIButton) {
+        let price = resultPrice
+        let resultPrice = ResultPrice(amountCompanion: amountCompanion, price: price)
+        completion?(resultPrice)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func showAllTaxis(_ sender: UIButton) {
