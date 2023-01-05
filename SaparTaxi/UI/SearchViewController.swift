@@ -29,6 +29,10 @@ class SearchViewController: UIViewController {
     var completion: ((Location)->Void)?
     var coordinate: CLLocationCoordinate2D?
     
+    var timer = Timer()
+    let delay = 0.5
+    var textSearch: String?
+    
     override func viewDidLoad() {
         self.searchAddress?.delegate = self
         resaltSearchTableView?.tableFooterView = UIView()
@@ -39,14 +43,21 @@ class SearchViewController: UIViewController {
 
         mainView?.addSubview(createBackButton())
     }
+    
+    @objc func geocodingRequest() {
+        guard let coordinate = coordinate, let textSearch = textSearch else { return }
+        GeocodingService.shared.getPlaces(string: textSearch, center: coordinate) { [weak self] (locations) in
+            self?.addresses = locations
+        }
+    }
 }
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard let coordinate = coordinate else { return }
-        GeocodingService.getPlaces(string: searchText, center: coordinate) { [weak self] (locations) in
-            self?.addresses = locations
-        }
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: delay, target: self, selector: #selector(geocodingRequest), userInfo: nil, repeats: false)
+
+        textSearch = searchText
     }
 }
 
