@@ -32,16 +32,50 @@ class GeocodingService: NSObject {
         
     }
     
-    func getPlaces(string: String, completion:(([Location])->Void)?) {
-//        geocoder.geocodeAddressString(<#T##addressString: String##String#>, completionHandler: <#T##CLGeocodeCompletionHandler##CLGeocodeCompletionHandler##([CLPlacemark]?, Error?) -> Void#>)
-        
-        /*
-         curl --location --request GET 'https://suggest-maps.yandex.ru/suggest-geo?apikey=a4018892-4411-4709-97ea-6881ac674715&v=7&search_type=all&lang=ru_RU&n=50&bbox=71.18039008452863,50.90665734917379~71.71611852833287,51.29543426733995&part=абая'
-         */
+    func getPlaces(string: String, center: CLLocationCoordinate2D, completion:(([Location])->Void)?) {
+        let delta = 0.3
+        let boxStr = String(format: "%f,%f~%f,%f", center.latitude-delta, center.longitude-delta, center.latitude+delta, center.longitude+delta)
+        guard var urlComp = URLComponents(string: "https://suggest-maps.yandex.ru/suggest-geo") else { return }
+        urlComp.queryItems = [
+            URLQueryItem(name: "apikey", value: "a4018892-4411-4709-97ea-6881ac674715"),
+            URLQueryItem(name: "v", value: "7"),
+            URLQueryItem(name: "search_type", value: "all"),
+            URLQueryItem(name: "lang", value: "ru_RU"),
+            URLQueryItem(name: "n", value: "50"),
+            URLQueryItem(name: "bbox", value: boxStr),
+            URLQueryItem(name: "part", value: string),
+            URLQueryItem(name: "format", value: "json")
+        ]
+        guard let url = urlComp.url else { return }
+        let request = URLRequest(url: url)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, var str = String(data: data, encoding: .utf8) else {
+                completion?([])
+                return
+            }
+            str.removeFirst(14) //suggest.apply(
+            str.removeLast()
+             
+            let decoder = JSONDecoder()
+            let response = try? decoder.decode(PlacesResponse.self, from: Data(str.utf8))
+            completion?(response?.locations ?? [])
+        }
+        task.resume()
     }
 }
 
-struct Place {
+struct PlacesResponse: Codable {
+    var part: String
+    var results: [Place]
+    
+    var locations: [Location] {
+        return results.map { place in
+            Location(coordinate: CLLocationCoordinate2D(latitude: place.lat, longitude: place.lon), address: place.name)
+        }
+    }
+}
+
+struct Place: Codable {
     var name: String
     var desc: String
     var lat: Double

@@ -51,7 +51,7 @@ class MapViewController: UIViewController {
     
     var state: State = .open
     var runningAnimators: [UIViewPropertyAnimator] = []
-    let viewOffset: CGFloat = 0
+    var viewOffset: CGFloat = 0
     let heightTableView: CGFloat = 200
     
     //MARK: -
