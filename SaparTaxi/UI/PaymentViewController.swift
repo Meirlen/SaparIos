@@ -56,8 +56,8 @@ class PaymentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let loc1 = Location(coordinate: CLLocationCoordinate2D(latitude: 73.13254547, longitude: 49.77490997), address: "улица Язева, 10", desc: "улица Язева, 10")
-        let loc2 = Location(coordinate: CLLocationCoordinate2D(latitude: 73.08615875, longitude: 49.80342102), address: "ЦУМ", desc: "ЦУМ")
+        let loc1 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.77490997, longitude: 73.13254547), address: "улица Язева, 10", desc: "улица Язева, 10")
+        let loc2 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.80342102, longitude: 73.08615875), address: "ЦУМ", desc: "ЦУМ")
         ApiService.estimateOrder(locations: [loc1, loc2]) { [weak self] prices in
             self?.prices = prices
         }

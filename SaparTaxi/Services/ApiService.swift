@@ -6,6 +6,7 @@
 //
 
 import CoreLocation
+import Polyline
 
 struct TaxiService: Codable {
     var name: String?
@@ -41,7 +42,7 @@ class ApiService: NSObject {
         }
         
         let points = locations.map { location in
-            let pointCoord = [location.coordinate.longitude, location.coordinate.latitude]
+            let pointCoord = [location.coordinate.latitude, location.coordinate.longitude]
             return PaymentRequestPoint(short_text: location.address, fullname: location.desc, geo_point: pointCoord, type: "geo", city: "Караганда")
         }
         
@@ -109,6 +110,54 @@ class ApiService: NSObject {
             let addr = response?["text"]
             DispatchQueue.main.async {
                 completion?(coordinate, addr)
+            }
+        }
+        task.resume()
+    }
+}
+
+//MARK: -
+
+struct Route: Codable {
+    var geometry: String
+}
+
+struct RouteResponse: Codable {
+    var routes: [Route]
+}
+
+class OpenStreetMapService {
+    //http://project-osrm.org/docs/v5.7.0/api/?language=Objective-C#general-options
+    static func getRoute(locations: [Location], completion:(([CLLocationCoordinate2D])->Void)?) {
+        
+        let locationStrings = locations.map { location in
+            let coord = location.coordinate
+            return String(format: "%f,%f", coord.longitude, coord.latitude)
+        }
+        let path = locationStrings.joined(separator: ";")
+        
+        guard var urlComp = URLComponents(string: "http://router.project-osrm.org/route/v1/driving/"+path) else { return }
+        urlComp.queryItems = [
+            URLQueryItem(name: "alternatives", value: "true"),
+            URLQueryItem(name: "geometries", value: "polyline")
+        ]
+        guard let url = urlComp.url else { return }
+        let request = URLRequest(url: url)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion?([])
+                }
+                return
+            }
+             
+            let decoder = JSONDecoder()
+            let response = try? decoder.decode(RouteResponse.self, from: data)
+            let routeStr = response?.routes.first?.geometry ?? ""
+            let polyline = Polyline(encodedPolyline: routeStr)
+            let coords = polyline.coordinates ?? []
+            DispatchQueue.main.async {
+                completion?(coords)
             }
         }
         task.resume()

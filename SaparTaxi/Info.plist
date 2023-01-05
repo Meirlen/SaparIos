@@ -29,7 +29,10 @@
 	<string>location permission string</string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
-	<key>NSAllowsArbitraryLoads</key>
-	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

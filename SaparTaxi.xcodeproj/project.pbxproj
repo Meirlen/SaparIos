@@ -35,6 +35,7 @@
 		CF381C55295F2F3400DD70E1 /* GeocodingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF381C54295F2F3400DD70E1 /* GeocodingService.swift */; };
 		CF381C58295F4B5700DD70E1 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF381C57295F4B5700DD70E1 /* Order.swift */; };
 		CF381C5A295F4D1700DD70E1 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF381C59295F4D1700DD70E1 /* ApiService.swift */; };
+		CF5C19362967214900F23B70 /* Polyline in Frameworks */ = {isa = PBXBuildFile; productRef = CF5C19352967214900F23B70 /* Polyline */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -79,6 +80,7 @@
 		CF381C54295F2F3400DD70E1 /* GeocodingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeocodingService.swift; sourceTree = "<group>"; };
 		CF381C57295F4B5700DD70E1 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		CF381C59295F4D1700DD70E1 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
+		CF5C19372967271B00F23B70 /* Karaganda.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Karaganda.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 				CF381C49295F1E1700DD70E1 /* MapboxCoreMaps.xcframework in Frameworks */,
 				CF381C46295F1E1600DD70E1 /* MapboxCommon.xcframework in Frameworks */,
 				CF381C4B295F1E1900DD70E1 /* MapboxMaps.xcframework in Frameworks */,
+				CF5C19362967214900F23B70 /* Polyline in Frameworks */,
 				CF381C4F295F1E1B00DD70E1 /* Turf.xcframework in Frameworks */,
 				50AD12AF295F373400DC46C1 /* FirebaseDatabase in Frameworks */,
 				CF381C4D295F1E1A00DD70E1 /* MapboxMobileEvents.xcframework in Frameworks */,
@@ -154,6 +157,7 @@
 				CF381C31295F1AD400DD70E1 /* Assets.xcassets */,
 				50AD12A9295F30CF00DC46C1 /* GoogleService-Info.plist */,
 				CF381C36295F1AD400DD70E1 /* Info.plist */,
+				CF5C19372967271B00F23B70 /* Karaganda.gpx */,
 			);
 			path = SaparTaxi;
 			sourceTree = "<group>";
@@ -196,6 +200,7 @@
 			packageProductDependencies = (
 				50AD12AC295F373400DC46C1 /* FirebaseMessaging */,
 				50AD12AE295F373400DC46C1 /* FirebaseDatabase */,
+				CF5C19352967214900F23B70 /* Polyline */,
 			);
 			productName = SaparTaxi;
 			productReference = CF381C25295F1AD300DD70E1 /* SaparTaxi.app */;
@@ -227,6 +232,7 @@
 			mainGroup = CF381C1C295F1AD300DD70E1;
 			packageReferences = (
 				50AD12AB295F373400DC46C1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CF5C19342967214900F23B70 /* XCRemoteSwiftPackageReference "Polyline" */,
 			);
 			productRefGroup = CF381C26295F1AD300DD70E1 /* Products */;
 			projectDirPath = "";
@@ -499,6 +505,14 @@
 				minimumVersion = 10.3.0;
 			};
 		};
+		CF5C19342967214900F23B70 /* XCRemoteSwiftPackageReference "Polyline" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/raphaelmor/Polyline.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -511,6 +525,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 50AD12AB295F373400DC46C1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabase;
+		};
+		CF5C19352967214900F23B70 /* Polyline */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF5C19342967214900F23B70 /* XCRemoteSwiftPackageReference "Polyline" */;
+			productName = Polyline;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

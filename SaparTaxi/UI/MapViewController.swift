@@ -7,6 +7,7 @@
 
 import UIKit
 import MapboxMaps
+import MapboxCommon
 
 enum State {
     case closed
@@ -186,6 +187,18 @@ class MapViewController: UIViewController {
         let mapPoint = mapView.convert(point, from: pinContainer)
         let coord = mapView.mapboxMap.coordinate(for: mapPoint)
         updateCoordinate(coord: coord, moveCamera: false)
+    }
+    
+    private func requestAndDrawRoute() {
+        let loc1 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.77490997, longitude: 73.13254547), address: "улица Язева, 10", desc: "улица Язева, 10")
+        let loc2 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.80342102, longitude: 73.08615875), address: "ЦУМ", desc: "ЦУМ")
+        OpenStreetMapService.getRoute(locations: [loc1, loc2]) { [weak self] coordinates in
+            var line = PolylineAnnotation(lineCoordinates: coordinates)
+            line.lineColor = StyleColor(.red)
+            line.lineWidth = 5
+            let manager = self?.mapView.annotations.makePolylineAnnotationManager()
+            manager?.annotations = [line]
+        }
     }
     
     //MARK: - Bottom bar
