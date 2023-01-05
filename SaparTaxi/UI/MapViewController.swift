@@ -64,6 +64,9 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
         
+        guard let infoBarViewHeight = infoBarView?.frame.height else { return }
+        viewOffset = infoBarViewHeight
+        
         mapView = MapView(frame: view.bounds, mapInitOptions: MapInitOptions())
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.insertSubview(mapView, at: 0)
@@ -78,8 +81,6 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
-        guard let infoBarViewHeight = infoBarView?.frame.height else { return }
-        viewOffset = infoBarViewHeight
         heightViewTableView?.constant = 0
         updateLocation()        
     }
