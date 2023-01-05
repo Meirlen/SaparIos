@@ -10,6 +10,7 @@ import CoreLocation
 struct Location {
     let coordinate: CLLocationCoordinate2D
     let address: String
+    let desc: String
 }
 
 enum CarType {

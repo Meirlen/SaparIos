@@ -22,6 +22,15 @@ class MapViewController: UIViewController {
     @IBOutlet weak var barView: UIView?
     @IBOutlet weak var infoBarView: UIView?
     @IBOutlet weak var heightInfoView: NSLayoutConstraint?
+    @IBOutlet weak var whereLabel: UILabel?
+    @IBOutlet weak var whereView: UIView?
+    @IBOutlet weak var whereNameLabel: UILabel?
+    @IBOutlet weak var whereDescrLabel: UILabel?
+    @IBOutlet weak var finishLabel: UILabel?
+    @IBOutlet weak var finishView: UIView?
+    @IBOutlet weak var finishNameLabel: UILabel?
+    @IBOutlet weak var finishDescrLabel: UILabel?
+    
     
     @IBOutlet weak var pinView: UIImageView?
     @IBOutlet weak var addressLabel: UILabel?
@@ -46,6 +55,36 @@ class MapViewController: UIViewController {
     private var coordinateTimer: Timer? {
         didSet {
             oldValue?.invalidate()
+        }
+    }
+    
+    var order = Order()
+    
+    var startAddress: Location? {
+        get {
+            return order.startLocation
+        }
+        set {
+            order.startLocation = newValue
+        
+            whereLabel?.isHidden = true
+            whereView?.isHidden = false
+            whereNameLabel?.text = startAddress?.address
+            whereDescrLabel?.text = startAddress?.desc
+        }
+    }
+    
+    var finishAddresses: [Location] {
+        get {
+            return order.destinations
+        }
+        set {
+            order.destinations = newValue
+            
+            finishLabel?.isHidden = true
+            finishView?.isHidden = false
+            finishNameLabel?.text = finishAddresses.first?.address
+            finishDescrLabel?.text = finishAddresses.first?.desc
         }
     }
     
@@ -93,7 +132,18 @@ class MapViewController: UIViewController {
     
     @IBAction func pushScreenSearch() {
         if let screen = SearchViewController.loadFromStoryboard(name: "Main") {
-            navigationController?.pushViewController(screen, animated: true)
+            screen.completion = { [weak self] address in
+                guard let address = address else { return }
+                
+                if self?.startAddress == nil {
+                    self?.startAddress = address
+                }
+                else {
+                    self?.finishAddresses.append(address)
+                }
+            }
+            screen.coordinate = coordinate
+            vc?.pushViewController(screen, animated: true)
         }
     }
     

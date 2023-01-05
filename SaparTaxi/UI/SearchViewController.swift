@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 @objc(SearchViewController)
 class SearchViewController: UIViewController {    
@@ -16,9 +17,17 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var resaltSearchTableView: UITableView?
     
     let indentifire = "ResultSearchCell"
-    var part: String?
+   
+    var addresses = [Location]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.resaltSearchTableView?.reloadData()
+            }
+        }
+    }
     
-    var completion: ((Place)->Void)?
+    var completion: ((Location)->Void)?
+    var coordinate: CLLocationCoordinate2D?
     
     override func viewDidLoad() {
         self.searchAddress?.delegate = self
@@ -30,29 +39,38 @@ class SearchViewController: UIViewController {
 
         mainView?.addSubview(createBackButton())
     }
-    
-    func finish(place: Place) {
-        completion?(place)
-        completion = nil
-    }
 }
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        part = searchText
+        guard let coordinate = coordinate else { return }
+        GeocodingService.shared.getPlaces(string: searchText, center: coordinate) { [weak self] (locations) in
+            self?.addresses = locations
+        }
     }
 }
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
-//        return datasource.count
+        return addresses.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: indentifire, for: indexPath)
         let resultCell = cell as? ResultSearchCell
+        let address = addresses[indexPath.row]
+        
+        resultCell?.addressLabel?.text = address.address
+        resultCell?.addressDescrLabel?.text = address.desc
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let address = addresses[indexPath.row]
+        completion?(address)
+        navigationController?.popViewController(animated: true)
     }
 }
 
