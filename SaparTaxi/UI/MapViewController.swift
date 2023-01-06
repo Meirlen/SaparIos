@@ -193,13 +193,18 @@ class MapViewController: UIViewController {
     }
     
     private func requestAndDrawRoute() {
+//        let dest = finishAddresses
+//        guard let start = startAddress, dest.count > 0 else { return }
+//        var locations = [start]
+//        locations.append(contentsOf: dest)
+        
         let loc1 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.77490997, longitude: 73.13254547), address: "улица Язева, 10", desc: "улица Язева, 10")
         let loc2 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.80342102, longitude: 73.08615875), address: "ЦУМ", desc: "ЦУМ")
-//        order.startLocation
-//        order.destinations
-        OpenStreetMapService.getRoute(locations: [loc1, loc2]) { [weak self] coordinates in
+        let locations = [loc1, loc2]
+        
+        OpenStreetMapService.getRoute(locations: locations) { [weak self] coordinates in
             var line = PolylineAnnotation(lineCoordinates: coordinates)
-            line.lineColor = StyleColor(.red)
+            line.lineColor = StyleColor(UIColor(named: "main_blue") ?? .blue)
             line.lineWidth = 5
             let manager = self?.mapView.annotations.makePolylineAnnotationManager()
             manager?.annotations = [line]

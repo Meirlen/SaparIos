@@ -49,7 +49,7 @@ class SearchViewController: UIViewController {
     
     @objc func geocodingRequest() {
         guard let coordinate = location?.coordinate, let textSearch = textSearch else { return }
-        GeocodingService.shared.getPlaces(string: textSearch, center: coordinate) { [weak self] (locations) in
+        GeocodingService.getPlaces(string: textSearch, center: coordinate) { [weak self] (locations) in
             self?.addresses = locations
         }
     }

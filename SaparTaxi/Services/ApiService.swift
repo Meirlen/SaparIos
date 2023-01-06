@@ -74,7 +74,7 @@ class ApiService: NSObject {
             var result = [TaxiService]()
             response?.forEach({ (key, value) in
                 if let item = value.first, let price = Double(item.price.filter("0123456789.,".contains)) {
-                    let service = TaxiService(name: key, price: price)
+                    var service = TaxiService(name: key, price: price)
                     service.oneOffer = (value.count == 1)
                     result.append(service)
                 }
