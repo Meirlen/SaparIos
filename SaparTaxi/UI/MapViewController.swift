@@ -20,6 +20,7 @@ enum State {
 
 class MapViewController: UIViewController {
     
+    @IBOutlet weak var gpsButton: UIButton?
     @IBOutlet weak var barView: UIView?
     @IBOutlet weak var infoBarView: UIView?
     @IBOutlet weak var heightInfoView: NSLayoutConstraint?
@@ -31,6 +32,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var finishView: UIView?
     @IBOutlet weak var finishNameLabel: UILabel?
     @IBOutlet weak var finishDescrLabel: UILabel?
+    @IBOutlet weak var plusAddressButton: UIButton?
     
     
     @IBOutlet weak var pinView: UIImageView?
@@ -82,6 +84,14 @@ class MapViewController: UIViewController {
         set {
             order.destinations = newValue
             
+            if finishAddresses.count > 1 && finishAddresses.count < 3 {
+                plusAddressButton?.isHidden = false
+            }
+            else {
+                plusAddressButton?.isHidden = true
+            }
+            
+            gpsButton?.isHidden = true
             finishLabel?.isHidden = true
             finishView?.isHidden = false
             finishNameLabel?.text = finishAddresses.first?.address
@@ -131,7 +141,21 @@ class MapViewController: UIViewController {
         updateLocation()
     }
     
-    @IBAction func pushScreenSearch() {
+    @IBAction func setStart(_ sender: UIButton) {
+        startAddress = nil
+        pushScreenSearch()
+    }
+    
+    @IBAction func setFinish(_ sender: UIButton) {
+        pushScreenSearch()
+    }
+    
+    @IBAction func addFinishAddresses(_ sender: UIButton) {
+        
+    }
+    
+    
+    func pushScreenSearch() {
         if let screen = SearchViewController.loadFromStoryboard(name: "Main") {
             screen.completion = { [weak self] address in
                 if self?.startAddress == nil {
@@ -148,6 +172,12 @@ class MapViewController: UIViewController {
     
     @IBAction func pushScreenPayment() {
         if let screen = PaymentViewController.loadFromStoryboard(name: "Main") {
+            var arrLoc = [Location]()
+            arrLoc = finishAddresses
+            guard let startLocation = order.startLocation else { return }
+            arrLoc.insert(startLocation, at: 0)
+            screen.arrLoc = arrLoc
+            
             navigationController?.pushViewController(screen, animated: false)
         }
     }
@@ -266,7 +296,7 @@ class MapViewController: UIViewController {
         }
     }    
     
-    @IBAction func showAllAddresses(_ sender: UIButton) {
+    func showAllAddresses() {
         UIView.animate(withDuration: 0.5, animations: {
             self.darkenedView?.alpha = 1
             self.darkenedView?.isHidden = false

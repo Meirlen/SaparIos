@@ -50,15 +50,17 @@ class PaymentViewController: UIViewController {
         }
     }
     
+    var arrLoc = [Location]()
+    
     var completion: ((ResultPrice?)->Void)?
     
     //MARK: -
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let loc1 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.77490997, longitude: 73.13254547), address: "улица Язева, 10", desc: "улица Язева, 10")
-        let loc2 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.80342102, longitude: 73.08615875), address: "ЦУМ", desc: "ЦУМ")
-        ApiService.estimateOrder(locations: [loc1, loc2]) { [weak self] prices in
+//        let loc1 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.77490997, longitude: 73.13254547), address: "улица Язева, 10", desc: "улица Язева, 10")
+//        let loc2 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.80342102, longitude: 73.08615875), address: "ЦУМ", desc: "ЦУМ")
+        ApiService.estimateOrder(locations: arrLoc) { [weak self] prices in
             self?.prices = prices
         }
     }
@@ -85,8 +87,8 @@ class PaymentViewController: UIViewController {
     }
     
     func setParamSlider() {
-        let max = averagePrice + averagePrice/100*10
-        let min = averagePrice - averagePrice/100*10
+        let max = averagePrice + averagePrice/100*25
+        let min = averagePrice - averagePrice/100*25
         priceSlider?.maximumValue = Float(max)
         priceSlider?.minimumValue = Float(min)
         priceSlider?.value = Float(averagePrice)
@@ -175,6 +177,7 @@ extension PaymentViewController: UITableViewDataSource, UITableViewDelegate{
         
         let price = prices[indexPath.row]
         taxiCell?.nameTaxiLabel?.text = price.name
+        taxiCell?.typeLabel?.text = price.oneOffer == true ? "Цена гибкая" : "Цена фиксированная"
         taxiCell?.amountButton?.titleLabel?.text = String(price.price)
         taxiCell?.amountButton?.setTitle(String(price.price), for: .normal)
 
