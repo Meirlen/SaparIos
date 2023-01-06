@@ -141,7 +141,7 @@ class MapViewController: UIViewController {
                     self?.finishAddresses.append(address)
                 }
             }
-            screen.coordinate = coordinate
+            screen.location = order.startLocation
             navigationController?.pushViewController(screen, animated: true)
         }
     }
@@ -168,9 +168,12 @@ class MapViewController: UIViewController {
         addressActivity?.isHidden = false
         GeocodingService.getAddress(coordinate: coordinate) { [weak self] coord, address in
             guard let self = self, self.coordinate == coord else { return }
-            self.addressLabel?.text = address ?? "неизвестное место"
+            let addr = address ?? "неизвестное место"
+            self.addressLabel?.text = addr
             self.addressLabel?.isHidden = false
             self.addressActivity?.isHidden = true
+            
+            self.startAddress = Location(coordinate: coord, address: addr, desc: "")
         }
     }
     
@@ -192,6 +195,8 @@ class MapViewController: UIViewController {
     private func requestAndDrawRoute() {
         let loc1 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.77490997, longitude: 73.13254547), address: "улица Язева, 10", desc: "улица Язева, 10")
         let loc2 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.80342102, longitude: 73.08615875), address: "ЦУМ", desc: "ЦУМ")
+//        order.startLocation
+//        order.destinations
         OpenStreetMapService.getRoute(locations: [loc1, loc2]) { [weak self] coordinates in
             var line = PolylineAnnotation(lineCoordinates: coordinates)
             line.lineColor = StyleColor(.red)

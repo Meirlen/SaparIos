@@ -27,14 +27,17 @@ class SearchViewController: UIViewController {
     }
     
     var completion: ((Location)->Void)?
-    var coordinate: CLLocationCoordinate2D?
+    var location: Location?
     
     var timer = Timer()
     let delay = 0.5
     var textSearch: String?
     
     override func viewDidLoad() {
-        self.searchAddress?.delegate = self
+        super.viewDidLoad()
+        
+        searchAddress?.text = location?.address
+        searchAddress?.delegate = self
         resaltSearchTableView?.tableFooterView = UIView()
     }
     
@@ -45,7 +48,7 @@ class SearchViewController: UIViewController {
     }
     
     @objc func geocodingRequest() {
-        guard let coordinate = coordinate, let textSearch = textSearch else { return }
+        guard let coordinate = location?.coordinate, let textSearch = textSearch else { return }
         GeocodingService.shared.getPlaces(string: textSearch, center: coordinate) { [weak self] (locations) in
             self?.addresses = locations
         }
