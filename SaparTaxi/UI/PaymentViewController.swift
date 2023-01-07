@@ -43,7 +43,7 @@ class PaymentViewController: UIViewController {
     var prices = [TaxiService]() {
         didSet {
             getAveragePrice()
-            averagePriceLabel?.text = String(averagePrice)
+            averagePriceLabel?.text = String(averagePrice) + " ₸"
             setParamSlider()
             loadPriceView?.isHidden = true
             allTaxiTableView?.reloadData()
@@ -178,8 +178,7 @@ extension PaymentViewController: UITableViewDataSource, UITableViewDelegate{
         let price = prices[indexPath.row]
         taxiCell?.nameTaxiLabel?.text = price.name
         taxiCell?.typeLabel?.text = price.oneOffer == true ? "Цена гибкая" : "Цена фиксированная"
-        taxiCell?.amountButton?.titleLabel?.text = String(price.price)
-        taxiCell?.amountButton?.setTitle(String(price.price), for: .normal)
+        taxiCell?.amountButton?.setTitle(String(price.price) + " ₸", for: .normal)
 
         return cell
     }

@@ -34,6 +34,10 @@ class MapViewController: UIViewController {
     @IBOutlet weak var finishDescrLabel: UILabel?
     @IBOutlet weak var plusAddressButton: UIButton?
     
+    @IBOutlet weak var economView: UIView?
+    @IBOutlet weak var comfortView: UIView?
+    
+    @IBOutlet weak var priceButton: UIButton?
     
     @IBOutlet weak var pinView: UIImageView?
     @IBOutlet weak var addressLabel: UILabel?
@@ -99,6 +103,21 @@ class MapViewController: UIViewController {
         }
     }
     
+    var price: Double? {
+        get {
+            return order.price
+        }
+        set {
+            guard let newValue = newValue else { return }
+            
+            order.price = newValue
+            
+            priceButton?.setTitle(String(newValue) + " ₸", for: .normal)
+        }
+    }
+    
+    var amountCompanion: Int?
+    
     var state: State = .open
     var runningAnimators: [UIViewPropertyAnimator] = []
     var viewOffset: CGFloat = 0
@@ -147,11 +166,16 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func setFinish(_ sender: UIButton) {
-        pushScreenSearch()
+        if finishAddresses.count == 0 {
+            pushScreenSearch()
+        }
+        else if finishAddresses.count > 1 {
+            showAllAddresses()
+        }
     }
     
     @IBAction func addFinishAddresses(_ sender: UIButton) {
-        
+        pushScreenSearch()
     }
     
     
@@ -172,6 +196,10 @@ class MapViewController: UIViewController {
     
     @IBAction func pushScreenPayment() {
         if let screen = PaymentViewController.loadFromStoryboard(name: "Main") {
+            screen.completion = { [weak self] price in
+                self?.price = price?.price
+                self?.amountCompanion = price?.amountCompanion
+            }
             var arrLoc = [Location]()
             arrLoc = finishAddresses
             guard let startLocation = order.startLocation else { return }
@@ -181,6 +209,17 @@ class MapViewController: UIViewController {
             navigationController?.pushViewController(screen, animated: false)
         }
     }
+    
+    @IBAction func setTypeEconom(_ sender: UIButton) {
+        economView?.backgroundColor = UIColor(named: "main_background")
+        comfortView?.backgroundColor = .clear
+    }
+    
+    @IBAction func setTypeComfort(_ sender: UIButton) {
+        economView?.backgroundColor = .clear
+        comfortView?.backgroundColor = UIColor(named: "main_background")
+    }
+    
     
     //MARK: -
     
