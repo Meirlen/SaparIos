@@ -112,7 +112,7 @@ class MapViewController: UIViewController {
             
             order.price = newValue
             
-            priceButton?.setTitle(String(newValue) + " ₸", for: .normal)
+            priceButton?.setTitle(String(format: "%.0f", newValue) + " ₸", for: .normal)
         }
     }
     

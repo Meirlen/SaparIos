@@ -34,7 +34,7 @@ class PaymentViewController: UIViewController {
     @IBOutlet weak var allTaxiTableView: UITableView?
     @IBOutlet weak var heightViewTableView: NSLayoutConstraint?
     
-    let heightTableView: CGFloat = 300
+    let heightCellTableView: CGFloat = 44
     var amountCompanion = 1
     var averagePrice: Double = 0.0
     var resultPrice: Double = 0.0
@@ -43,7 +43,7 @@ class PaymentViewController: UIViewController {
     var prices = [TaxiService]() {
         didSet {
             getAveragePrice()
-            averagePriceLabel?.text = String(averagePrice) + " ₸"
+            averagePriceLabel?.text = String(format: "%.0f", averagePrice) + " ₸"
             setParamSlider()
             loadPriceView?.isHidden = true
             allTaxiTableView?.reloadData()
@@ -148,7 +148,7 @@ class PaymentViewController: UIViewController {
         UIView.animate(withDuration: 0.5, animations: {
             self.darkenedView?.alpha = 1
             self.darkenedView?.isHidden = false
-            self.heightViewTableView?.constant = self.heightTableView
+            self.heightViewTableView?.constant = self.heightCellTableView * CGFloat(self.prices.count)
             self.view.layoutIfNeeded()
             
         })
@@ -178,7 +178,7 @@ extension PaymentViewController: UITableViewDataSource, UITableViewDelegate{
         let price = prices[indexPath.row]
         taxiCell?.nameTaxiLabel?.text = price.name
         taxiCell?.typeLabel?.text = price.oneOffer == true ? "Цена гибкая" : "Цена фиксированная"
-        taxiCell?.amountButton?.setTitle(String(price.price) + " ₸", for: .normal)
+        taxiCell?.amountButton?.setTitle(String(format: "%.0f", price.price) + " ₸", for: .normal)
 
         return cell
     }
