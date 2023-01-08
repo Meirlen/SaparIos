@@ -44,6 +44,7 @@ class MapViewController: UIViewController {
     
     @IBOutlet weak var economView: UIView?
     @IBOutlet weak var comfortView: UIView?
+    @IBOutlet weak var calculatePaymentButton: UIButton?
     
     @IBOutlet weak var priceButton: UIButton?
     
@@ -104,6 +105,15 @@ class MapViewController: UIViewController {
             }
             else {
                 plusAddressButton?.isHidden = true
+            }
+            
+            if finishAddresses.count > 0 {
+                calculatePaymentButton?.isEnabled = true
+                calculatePaymentButton?.alpha = 1
+            }
+            else {
+                calculatePaymentButton?.isEnabled = false
+                calculatePaymentButton?.alpha = 0.6
             }
             
             gpsButton?.isHidden = true

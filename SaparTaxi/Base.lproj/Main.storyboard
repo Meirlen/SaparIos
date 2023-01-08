@@ -481,7 +481,7 @@
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fKZ-md-elt">
+                                                            <button opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fKZ-md-elt">
                                                                 <rect key="frame" x="90" y="120" width="218" height="48"/>
                                                                 <color key="backgroundColor" name="main_ yellow"/>
                                                                 <constraints>
@@ -677,7 +677,7 @@
                                     <constraint firstItem="cRT-Va-5ll" firstAttribute="centerY" secondItem="twq-Ss-aKO" secondAttribute="centerY" constant="-24" id="pd3-5n-JPS"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cSi-hx-eZe">
+                            <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cSi-hx-eZe">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oDD-Mt-VPB">
@@ -695,7 +695,7 @@
                                                 <rect key="frame" x="0.0" y="40" width="414" height="160"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressCell" id="SK7-aE-upE" customClass="AddressCell" customModule="SaparTaxi" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressCell" rowHeight="43.5" id="SK7-aE-upE" customClass="AddressCell" customModule="SaparTaxi" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SK7-aE-upE" id="JXT-nF-rQ0">
@@ -819,6 +819,7 @@
                         <outlet property="addressLabel" destination="1hV-qd-0MW" id="CzK-0k-UeP"/>
                         <outlet property="barView" destination="EUd-XL-1cX" id="Ai4-Vd-qdZ"/>
                         <outlet property="buttonOrderView" destination="Irl-XX-vvV" id="Adg-1T-MYr"/>
+                        <outlet property="calculatePaymentButton" destination="fKZ-md-elt" id="bHt-yv-ZN2"/>
                         <outlet property="comfortView" destination="J19-W3-PwB" id="Xfz-Fg-S7P"/>
                         <outlet property="darkenedView" destination="cSi-hx-eZe" id="VXC-MT-WrI"/>
                         <outlet property="economView" destination="6ki-Zb-y5Y" id="wt0-HF-fop"/>
