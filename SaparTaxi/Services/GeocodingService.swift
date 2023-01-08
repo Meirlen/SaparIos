@@ -58,17 +58,18 @@ struct PlacesResponse: Codable {
     var results: [Place]
     
     var locations: [Location] {
-        return results.map { place in
-            Location(coordinate: CLLocationCoordinate2D(latitude: place.lat, longitude: place.lon), address: place.name, desc: place.desc)
+        return results.compactMap { place in
+            guard let lat = place.lat, let lon = place.lon else { return nil }
+            return Location(coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lon), address: place.name, desc: place.desc ?? "")
         }
     }
 }
 
 struct Place: Codable {
     var name: String
-    var desc: String
-    var lat: Double
-    var lon: Double
+    var desc: String?
+    var lat: Double?
+    var lon: Double?
 }
 
 extension CLPlacemark {

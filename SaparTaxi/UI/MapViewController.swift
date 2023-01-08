@@ -102,6 +102,8 @@ class MapViewController: UIViewController {
             finishView?.isHidden = false
             finishNameLabel?.text = finishAddresses.first?.address
             finishDescrLabel?.text = finishAddresses.first?.desc
+            
+            requestAndDrawRoute()
         }
     }
     
@@ -163,13 +165,12 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func setStart(_ sender: UIButton) {
-        startAddress = nil
-        pushScreenSearch()
+        pushScreenSearch(start: true)
     }
     
     @IBAction func setFinish(_ sender: UIButton) {
         if finishAddresses.count == 0 {
-            pushScreenSearch()
+            pushScreenSearch(start: false)
         }
         else if finishAddresses.count > 1 {
             showAllAddresses()
@@ -177,14 +178,13 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func addFinishAddresses(_ sender: UIButton) {
-        pushScreenSearch()
+        pushScreenSearch(start: false)
     }
     
-    
-    func pushScreenSearch() {
+    func pushScreenSearch(start: Bool) {
         if let screen = SearchViewController.loadFromStoryboard(name: "Main") {
             screen.completion = { [weak self] address in
-                if self?.startAddress == nil {
+                if start {
                     self?.startAddress = address
                 }
                 else {
@@ -264,14 +264,10 @@ class MapViewController: UIViewController {
     }
     
     private func requestAndDrawRoute() {
-//        let dest = finishAddresses
-//        guard let start = startAddress, dest.count > 0 else { return }
-//        var locations = [start]
-//        locations.append(contentsOf: dest)
-        
-        let loc1 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.77490997, longitude: 73.13254547), address: "улица Язева, 10", desc: "улица Язева, 10")
-        let loc2 = Location(coordinate: CLLocationCoordinate2D(latitude: 49.80342102, longitude: 73.08615875), address: "ЦУМ", desc: "ЦУМ")
-        let locations = [loc1, loc2]
+        let dest = finishAddresses
+        guard let start = startAddress, dest.count > 0 else { return }
+        var locations = [start]
+        locations.append(contentsOf: dest)
         
         OpenStreetMapService.getRoute(locations: locations) { [weak self] coordinates in
             var line = PolylineAnnotation(lineCoordinates: coordinates)
