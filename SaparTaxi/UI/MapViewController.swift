@@ -46,6 +46,8 @@ class MapViewController: UIViewController {
     @IBOutlet weak var darkenedView: UIView?
     @IBOutlet weak var heightViewTableView: NSLayoutConstraint?    
 
+    @IBOutlet weak var headerView: UIView?
+    
     private var mapView: MapView!
     
     private var coordinate: CLLocationCoordinate2D?
@@ -288,6 +290,10 @@ class MapViewController: UIViewController {
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.onDrag(_:)))
         self.barView?.addGestureRecognizer(panGesture)
+        
+        if let img = UIImage(named: "bacground_header_bar") {
+            headerView?.backgroundColor = UIColor(patternImage: img)
+        }
     }
 
     func animateView(to state: State, duration: TimeInterval )  {
