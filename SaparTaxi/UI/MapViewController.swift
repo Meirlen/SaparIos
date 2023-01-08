@@ -53,7 +53,7 @@ class MapViewController: UIViewController {
     
     @IBOutlet weak var addressActivity: UIActivityIndicatorView?
     @IBOutlet weak var darkenedView: UIView?
-    @IBOutlet weak var finishAddressesTableView: UIStackView?
+    @IBOutlet weak var finishAddressesTableView: UITableView?
     @IBOutlet weak var heightViewTableView: NSLayoutConstraint?
 
     @IBOutlet weak var headerView: UIView?
@@ -123,6 +123,8 @@ class MapViewController: UIViewController {
             finishDescrLabel?.text = finishAddresses.first?.desc
             
             requestAndDrawRoute()
+            
+            finishAddressesTableView?.reloadData()
         }
     }
     
@@ -346,14 +348,6 @@ class MapViewController: UIViewController {
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.onDrag(_:)))
         self.barView?.addGestureRecognizer(panGesture)
-    }
-    
-    private func setupBarView() {
-        self.heightInfoView?.constant = viewOffset
-        self.view.layoutIfNeeded()
-        
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.onDrag(_:)))
-        self.barView?.addGestureRecognizer(panGesture)
         
         if let img = UIImage(named: "bacground_header_bar") {
             headerView?.backgroundColor = UIColor(patternImage: img)
@@ -406,10 +400,9 @@ class MapViewController: UIViewController {
     }    
     
     func showAllAddresses() {
+        heightViewTableView?.constant = self.heightCellTableView * CGFloat(self.finishAddresses.count)
         UIView.animate(withDuration: 0.5, animations: {
             self.darkenedView?.alpha = 1
-            self.darkenedView?.isHidden = false
-            self.heightViewTableView?.constant = self.heightCellTableView * CGFloat(self.finishAddresses.count)
             self.view.layoutIfNeeded()
         })
     }
@@ -424,14 +417,11 @@ class MapViewController: UIViewController {
     }
     
     @objc func respondToSwipeGesture() {
-        UIView.animate(withDuration: 0.5, animations: {
+        heightViewTableView?.constant = 0
+        UIView.animate(withDuration: 0.5) {
             self.darkenedView?.alpha = 0
-            self.heightViewTableView?.constant = 0
             self.view.layoutIfNeeded()
-        }, completion:  {
-           (value: Bool) in
-            self.darkenedView?.isHidden = true
-        })
+        }
     }
 }
 
@@ -439,8 +429,8 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return finishAddresses.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: indentifire, for: indexPath)
         let listCell = cell as? AddressCell
         
