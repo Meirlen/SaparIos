@@ -25,11 +25,13 @@ class PaymentViewController: UIViewController {
     @IBOutlet weak var mainView: UIView?
     @IBOutlet weak var priceSlider: UISlider?
     @IBOutlet weak var titleSwichLabel: UILabel?
-    @IBOutlet weak var companionSwich: UISwitch?
+    @IBOutlet var companionSwich: UISwitch?
     @IBOutlet weak var addCompanionView: UIView?
-    @IBOutlet weak var amountLabel: UILabel?
-    @IBOutlet weak var minusButton: UIButton?
-    @IBOutlet weak var plusButton: UIButton?
+
+    @IBOutlet var plusButton: UIButton?
+    @IBOutlet var amountLabel: UILabel?
+    @IBOutlet var minusButton: UIButton?
+
     @IBOutlet weak var darkenedView: UIView?
     @IBOutlet weak var allTaxiTableView: UITableView?
     @IBOutlet weak var heightViewTableView: NSLayoutConstraint?
@@ -112,14 +114,14 @@ class PaymentViewController: UIViewController {
         self.topConstr?.constant = companionSwichIsOn ? 50 : 8
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
-        }  
+        }
         
         titleSwichLabel?.text = companionSwichIsOn == false ? "Включить режим попутчика" : "Режим попутчика активен"
     }
-        
+
     @IBAction func amountReduce(_ sender: UIButton) {
         if amountCompanion <= 2 {
-                minusButton?.isEnabled = false
+            minusButton?.isEnabled = false
         }
         plusButton?.isEnabled = true
         amountCompanion -= 1
