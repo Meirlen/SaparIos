@@ -106,7 +106,7 @@ class PaymentViewController: UIViewController {
             titleSliderLabel?.text = "ВАША ЦЕНА:"
         }
         resultPrice = Double(sender.value)
-        averagePriceLabel?.text = String(sender.value)
+        averagePriceLabel?.text = String(format: "%.0f", sender.value)  + " ₸"
     }
     
     @IBAction func companionIsActiv(_ sender: UISwitch) {

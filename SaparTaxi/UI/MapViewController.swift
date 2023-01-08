@@ -24,14 +24,22 @@ class MapViewController: UIViewController {
     @IBOutlet weak var barView: UIView?
     @IBOutlet weak var infoBarView: UIView?
     @IBOutlet weak var heightInfoView: NSLayoutConstraint?
+    
+    @IBOutlet weak var setOrderView: UIView?
+    @IBOutlet weak var resultPriceView: UIView?
+    @IBOutlet weak var buttonOrderView: UIView?
     @IBOutlet weak var whereLabel: UILabel?
     @IBOutlet weak var whereView: UIView?
     @IBOutlet weak var whereNameLabel: UILabel?
     @IBOutlet weak var whereDescrLabel: UILabel?
+    @IBOutlet weak var whereButton: UIButton?
+    @IBOutlet weak var entranceButton: UIButton?
+    
     @IBOutlet weak var finishLabel: UILabel?
     @IBOutlet weak var finishView: UIView?
     @IBOutlet weak var finishNameLabel: UILabel?
     @IBOutlet weak var finishDescrLabel: UILabel?
+    @IBOutlet weak var finishButton: UIButton?
     @IBOutlet weak var plusAddressButton: UIButton?
     
     @IBOutlet weak var economView: UIView?
@@ -90,7 +98,7 @@ class MapViewController: UIViewController {
         set {
             order.destinations = newValue
             
-            if finishAddresses.count > 1 && finishAddresses.count < 3 {
+            if finishAddresses.count > 0 && finishAddresses.count < 3 {
                 plusAddressButton?.isHidden = false
             }
             else {
@@ -116,9 +124,25 @@ class MapViewController: UIViewController {
             
             order.price = newValue
             
+            if !setOrderScreen {
+                setOrderBar()
+                setOrderScreen = true
+            }
+            
+            whereButton?.isEnabled = false
+            entranceButton?.isEnabled = false
+            finishButton?.isEnabled = false
+            plusAddressButton?.isHidden = true
+            
             priceButton?.setTitle(String(format: "%.0f", newValue) + " ₸", for: .normal)
         }
     }
+    
+    var setOrderViewHeight: CGFloat = 0
+    var resultPriceViewHeight: CGFloat = 0
+    var buttonOrderViewHeight: CGFloat = 0
+    let spacingStackView: CGFloat = 8
+    var setOrderScreen = false
     
     var amountCompanion: Int?
     
@@ -137,8 +161,7 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
         
-        guard let infoBarViewHeight = infoBarView?.frame.height else { return }
-        viewOffset = infoBarViewHeight
+        setStartBar()
         
         mapView = MapView(frame: view.bounds, mapInitOptions: MapInitOptions())
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -279,6 +302,36 @@ class MapViewController: UIViewController {
     }
     
     //MARK: - Bottom bar
+    
+    func setStartBar() {
+        guard let setOrderViewHeight = setOrderView?.frame.height, let resultPriceViewHeight = resultPriceView?.frame.height, let buttonOrderViewHeight = buttonOrderView?.frame.height else { return }
+        self.setOrderViewHeight = setOrderViewHeight
+        self.resultPriceViewHeight = resultPriceViewHeight
+        self.buttonOrderViewHeight = buttonOrderViewHeight
+        
+        buttonOrderView?.isHidden = true
+        resultPriceView?.isHidden = true
+        
+        guard let infoBarViewHeight = infoBarView?.frame.height else { return }
+        viewOffset = infoBarViewHeight - resultPriceViewHeight - buttonOrderViewHeight - spacingStackView * 2
+    }
+    
+    func setOrderBar() {
+        viewOffset = viewOffset + resultPriceViewHeight + buttonOrderViewHeight - setOrderViewHeight + spacingStackView
+
+        heightInfoView?.constant = viewOffset
+        resultPriceView?.isHidden = false
+        buttonOrderView?.isHidden = false
+        setOrderView?.isHidden = true
+    }
+    
+    private func setupBarView() {
+        self.heightInfoView?.constant = viewOffset
+        self.view.layoutIfNeeded()
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.onDrag(_:)))
+        self.barView?.addGestureRecognizer(panGesture)
+    }
     
     private func setupBarView() {
         self.heightInfoView?.constant = viewOffset
