@@ -52,7 +52,8 @@ class MapViewController: UIViewController {
     
     @IBOutlet weak var addressActivity: UIActivityIndicatorView?
     @IBOutlet weak var darkenedView: UIView?
-    @IBOutlet weak var heightViewTableView: NSLayoutConstraint?    
+    @IBOutlet weak var finishAddressesTableView: UIStackView?
+    @IBOutlet weak var heightViewTableView: NSLayoutConstraint?
 
     @IBOutlet weak var headerView: UIView?
     
@@ -144,12 +145,15 @@ class MapViewController: UIViewController {
     let spacingStackView: CGFloat = 8
     var setOrderScreen = false
     
+    let indentifire = "AddressCell"
+    
     var amountCompanion: Int?
     
     var state: State = .open
     var runningAnimators: [UIViewPropertyAnimator] = []
     var viewOffset: CGFloat = 0
     let heightTableView: CGFloat = 200
+    let heightCellTableView: CGFloat = 44
     
     //MARK: -
     
@@ -171,6 +175,7 @@ class MapViewController: UIViewController {
             self?.setupCoordinateTimer()
         })
         
+        addRecognizer()
         setupBarView()
     }
     
@@ -394,7 +399,7 @@ class MapViewController: UIViewController {
         UIView.animate(withDuration: 0.5, animations: {
             self.darkenedView?.alpha = 1
             self.darkenedView?.isHidden = false
-            self.heightViewTableView?.constant = self.heightTableView
+            self.heightViewTableView?.constant = self.heightCellTableView * CGFloat(self.finishAddresses.count)
             self.view.layoutIfNeeded()
         })
     }
@@ -420,3 +425,33 @@ class MapViewController: UIViewController {
     }
 }
 
+extension MapViewController: UITableViewDataSource, UITableViewDelegate{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return finishAddresses.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: indentifire, for: indexPath)
+        let listCell = cell as? AddressCell
+        
+        let address = finishAddresses[indexPath.row]
+        listCell?.addressNameLabel?.text = address.address
+        listCell?.addressDiscrLabel?.text = address.desc
+        listCell?.deleteButton?.tag = indexPath.row
+        listCell?.deleteButton?.removeTarget(self, action: nil, for: .touchUpInside)
+        listCell?.deleteButton?.addTarget(self, action:#selector(deleteCell(_:)), for: .touchUpInside)
+
+        return cell
+    }
+    
+    @objc func deleteCell(_ sender: UIButton){
+        finishAddresses.remove(at: sender.tag)
+        finishAddressesTableView?.reloadData()
+    }
+}
+
+class  AddressCell: UITableViewCell {
+    @IBOutlet weak var addressNameLabel: UILabel?
+    @IBOutlet weak var addressDiscrLabel: UILabel?
+    @IBOutlet weak var deleteButton: UIButton?
+}

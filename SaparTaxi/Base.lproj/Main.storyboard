@@ -677,7 +677,7 @@
                                     <constraint firstItem="cRT-Va-5ll" firstAttribute="centerY" secondItem="twq-Ss-aKO" secondAttribute="centerY" constant="-24" id="pd3-5n-JPS"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cSi-hx-eZe">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cSi-hx-eZe">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oDD-Mt-VPB">
@@ -738,6 +738,15 @@
                                                                     <color key="textColor" name="text_gray"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LeT-yy-rVq">
+                                                                    <rect key="frame" x="374" y="2" width="40" height="40"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="40" id="Xrr-f2-gxx"/>
+                                                                        <constraint firstAttribute="height" constant="40" id="dwy-q0-uYW"/>
+                                                                    </constraints>
+                                                                    <color key="tintColor" systemColor="systemRedColor"/>
+                                                                    <state key="normal" image="multiply" catalog="system"/>
+                                                                </button>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="cUq-bE-Bpk" firstAttribute="leading" secondItem="JXT-nF-rQ0" secondAttribute="leading" constant="8" id="Ios-I6-AAp"/>
@@ -746,16 +755,23 @@
                                                                 <constraint firstAttribute="bottomMargin" secondItem="XdN-qe-zVc" secondAttribute="bottom" id="h08-px-UBc"/>
                                                                 <constraint firstItem="cUq-bE-Bpk" firstAttribute="centerY" secondItem="JXT-nF-rQ0" secondAttribute="centerY" id="jWH-y4-az4"/>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="HYs-WS-XtR" secondAttribute="trailing" constant="8" id="mbX-w5-aIJ"/>
+                                                                <constraint firstAttribute="trailing" secondItem="LeT-yy-rVq" secondAttribute="trailing" id="msx-H1-Vy2"/>
                                                                 <constraint firstItem="XdN-qe-zVc" firstAttribute="leading" secondItem="HYs-WS-XtR" secondAttribute="leading" id="nxW-p1-SDQ"/>
+                                                                <constraint firstItem="LeT-yy-rVq" firstAttribute="centerY" secondItem="JXT-nF-rQ0" secondAttribute="centerY" id="sES-6U-Gku"/>
                                                                 <constraint firstItem="HYs-WS-XtR" firstAttribute="leading" secondItem="cUq-bE-Bpk" secondAttribute="trailing" constant="8" id="tFf-Z9-co4"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
-                                                            <outlet property="addressLabel" destination="HYs-WS-XtR" id="kd6-XV-VB7"/>
-                                                            <outlet property="fullAddressLabel" destination="XdN-qe-zVc" id="EOj-2K-hhu"/>
+                                                            <outlet property="addressDiscrLabel" destination="XdN-qe-zVc" id="1SS-h0-QrV"/>
+                                                            <outlet property="addressNameLabel" destination="HYs-WS-XtR" id="Egg-Sg-Jia"/>
+                                                            <outlet property="deleteButton" destination="LeT-yy-rVq" id="ZH1-5D-A9L"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="bkQ-9y-aeY"/>
+                                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Q42-JD-idZ"/>
+                                                </connections>
                                             </tableView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -807,6 +823,7 @@
                         <outlet property="darkenedView" destination="cSi-hx-eZe" id="VXC-MT-WrI"/>
                         <outlet property="economView" destination="6ki-Zb-y5Y" id="wt0-HF-fop"/>
                         <outlet property="entranceButton" destination="fwf-Q5-Jcm" id="Hom-SP-JwB"/>
+                        <outlet property="finishAddressesTableView" destination="Ppc-hB-G0W" id="DPZ-7g-YL0"/>
                         <outlet property="finishButton" destination="jN3-cy-chq" id="Q0t-W0-Udv"/>
                         <outlet property="finishDescrLabel" destination="YHg-Gd-2PZ" id="DA6-iX-ydj"/>
                         <outlet property="finishLabel" destination="WVS-hA-ay7" id="sd9-Vb-1Du"/>
@@ -1396,6 +1413,7 @@
         <image name="econom" width="168" height="60"/>
         <image name="mappin" catalog="system" width="105" height="128"/>
         <image name="mappin.and.ellipse" catalog="system" width="118" height="128"/>
+        <image name="multiply" catalog="system" width="128" height="111"/>
         <image name="scope" catalog="system" width="128" height="122"/>
         <image name="text.justifyleft" catalog="system" width="128" height="100"/>
         <namedColor name="AccentColor">
@@ -1430,6 +1448,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
