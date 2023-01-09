@@ -73,7 +73,7 @@ class PaymentViewController: UIViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        super.viewDidDisappear(animated)
         loadPriceView?.isHidden = false
     }
     

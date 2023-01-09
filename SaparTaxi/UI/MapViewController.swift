@@ -99,7 +99,7 @@ class MapViewController: UIViewController {
             }
             
             requestAndDrawRoute()
-            setStartBar()
+            price = 0
         }
     }
     
@@ -131,29 +131,22 @@ class MapViewController: UIViewController {
                 updateCoordinate(coord: coord, moveCamera: true)
             }
             
-            setStartBar()
+            price = 0
             
             finishAddressesTableView?.reloadData()
         }
     }
     
-    var price: Double? {
+    var price: Double {
         get {
             return order.price
         }
         set {
-            guard let newValue = newValue else { return }
-            
             order.price = newValue
-            setOrderBar()
+            reloadInfoBar()
             priceButton?.setTitle(String(format: "%.0f", newValue) + " ₸", for: .normal)
         }
     }
-    
-    var setOrderViewHeight: CGFloat = 0
-    var resultPriceViewHeight: CGFloat = 0
-    var buttonOrderViewHeight: CGFloat = 0
-    let spacingStackView: CGFloat = 8
     
     let indentifire = "AddressCell"
     
@@ -175,7 +168,7 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
         
-        setStartBar()
+        reloadInfoBar()
         
         mapView = MapView(frame: view.bounds, mapInitOptions: MapInitOptions())
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -246,8 +239,10 @@ class MapViewController: UIViewController {
         guard let startLocation = order.startLocation else { return }
         if let screen = PaymentViewController.loadFromStoryboard(name: "Main") {
             screen.completion = { [weak self] price in
-                self?.price = price?.price
-                self?.amountCompanion = price?.amountCompanion
+                if let pr = price?.price {
+                    self?.price = pr
+                    self?.amountCompanion = price?.amountCompanion
+                }
             }
             var arrLoc = [Location]()
             arrLoc = finishAddresses
@@ -390,32 +385,25 @@ class MapViewController: UIViewController {
     
     //MARK: - Bottom bar
     
-    func setStartBar() {
-        guard let setOrderViewHeight = setOrderView?.frame.height, let resultPriceViewHeight = resultPriceView?.frame.height, let buttonOrderViewHeight = buttonOrderView?.frame.height else { return }
-        self.setOrderViewHeight = setOrderViewHeight
-        self.resultPriceViewHeight = resultPriceViewHeight
-        self.buttonOrderViewHeight = buttonOrderViewHeight
-        
-        buttonOrderView?.isHidden = true
-        resultPriceView?.isHidden = true
-        
-        guard let infoBarViewHeight = infoBarView?.frame.height else { return }
-        viewOffset = infoBarViewHeight - resultPriceViewHeight - buttonOrderViewHeight - spacingStackView * 2
+    func layoutBottomBar() {
+        guard let stackView = buttonOrderView?.superview as? UIStackView else { return }
+        let views = stackView.arrangedSubviews.filter({$0.isHidden == false})
+        let heights = views.map({$0.bounds.height})
+        viewOffset = heights.reduce(0, +) + CGFloat(heights.count - 1) * stackView.spacing + 16
+        if state == .open {
+            heightInfoView?.constant = viewOffset
+        }
     }
     
-    func setOrderBar() {
-        viewOffset = viewOffset + resultPriceViewHeight + buttonOrderViewHeight - setOrderViewHeight + spacingStackView
-
-        heightInfoView?.constant = viewOffset
-        resultPriceView?.isHidden = false
-        buttonOrderView?.isHidden = false
-        setOrderView?.isHidden = true
+    func reloadInfoBar() {
+        let havePrice = (price > 0)
+        setOrderView?.isHidden = havePrice
+        buttonOrderView?.isHidden = !havePrice
+        resultPriceView?.isHidden = !havePrice
+        layoutBottomBar()
     }
     
     private func setupBarView() {
-        self.heightInfoView?.constant = viewOffset
-        self.view.layoutIfNeeded()
-        
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.onDrag(_:)))
         self.barView?.addGestureRecognizer(panGesture)
         

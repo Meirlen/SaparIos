@@ -345,7 +345,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3un-Tg-VXL">
-                                                        <rect key="frame" x="0.0" y="122" width="398" height="188"/>
+                                                        <rect key="frame" x="0.0" y="122" width="398" height="186"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="cQQ-ST-GFz">
                                                                 <rect key="frame" x="8" y="8" width="382" height="60"/>
@@ -473,17 +473,14 @@
                                                                     <constraint firstAttribute="height" constant="60" id="s7X-pm-qUz"/>
                                                                 </constraints>
                                                             </stackView>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Мы сравниваем десятки сервисов такси за несколько секунд и всегданаходим лучшую цену" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ymu-5b-ztn">
-                                                                <rect key="frame" x="8" y="85.5" width="382" height="26.5"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="26.329999999999998" id="cCo-BR-yVx"/>
-                                                                </constraints>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Мы сравниваем десятки сервисов такси за несколько секунд и всегда находим лучшую цену" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ymu-5b-ztn">
+                                                                <rect key="frame" x="24" y="84" width="350" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fKZ-md-elt">
-                                                                <rect key="frame" x="90" y="120" width="218" height="48"/>
+                                                                <rect key="frame" x="90" y="122" width="218" height="48"/>
                                                                 <color key="backgroundColor" name="main_ yellow"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="48" id="ht0-Gj-PzG"/>
@@ -506,12 +503,13 @@
                                                             <constraint firstItem="ymu-5b-ztn" firstAttribute="centerX" secondItem="3un-Tg-VXL" secondAttribute="centerX" id="Bfc-cH-X3z"/>
                                                             <constraint firstItem="fKZ-md-elt" firstAttribute="centerX" secondItem="3un-Tg-VXL" secondAttribute="centerX" id="Dsf-Hf-bDh"/>
                                                             <constraint firstItem="fKZ-md-elt" firstAttribute="leading" secondItem="3un-Tg-VXL" secondAttribute="leading" constant="90" id="I1h-7W-Lhv"/>
-                                                            <constraint firstItem="ymu-5b-ztn" firstAttribute="leading" secondItem="3un-Tg-VXL" secondAttribute="leading" constant="8" id="Lzq-KV-fwa"/>
+                                                            <constraint firstItem="ymu-5b-ztn" firstAttribute="leading" secondItem="3un-Tg-VXL" secondAttribute="leading" constant="24" id="Lzq-KV-fwa"/>
+                                                            <constraint firstAttribute="height" constant="186" id="UFK-fK-s5h"/>
                                                             <constraint firstItem="cQQ-ST-GFz" firstAttribute="leading" secondItem="3un-Tg-VXL" secondAttribute="leading" constant="8" id="cA8-TI-fFT"/>
                                                             <constraint firstAttribute="trailing" secondItem="cQQ-ST-GFz" secondAttribute="trailing" constant="8" id="e1l-15-Sem"/>
                                                             <constraint firstItem="cQQ-ST-GFz" firstAttribute="top" secondItem="3un-Tg-VXL" secondAttribute="top" constant="8" id="gBS-8Z-Idr"/>
-                                                            <constraint firstItem="ymu-5b-ztn" firstAttribute="top" secondItem="cQQ-ST-GFz" secondAttribute="bottom" constant="17.670000000000002" id="hSu-b4-AwS"/>
-                                                            <constraint firstAttribute="bottom" secondItem="fKZ-md-elt" secondAttribute="bottom" constant="20" id="sJR-1C-KRf"/>
+                                                            <constraint firstItem="ymu-5b-ztn" firstAttribute="top" secondItem="cQQ-ST-GFz" secondAttribute="bottom" constant="16" id="hSu-b4-AwS"/>
+                                                            <constraint firstAttribute="bottom" secondItem="fKZ-md-elt" secondAttribute="bottom" constant="16" id="sJR-1C-KRf"/>
                                                             <constraint firstItem="fKZ-md-elt" firstAttribute="top" secondItem="ymu-5b-ztn" secondAttribute="bottom" constant="8" id="tKc-7j-bX9"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
@@ -521,22 +519,22 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ykv-qM-qpu">
-                                                        <rect key="frame" x="0.0" y="318" width="398" height="59.5"/>
+                                                        <rect key="frame" x="0.0" y="316" width="398" height="61.5"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Ваша цена:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kuv-PX-LnG">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Ваша цена:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kuv-PX-LnG">
                                                                 <rect key="frame" x="20" y="10" width="309" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Оплата наличными" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lay-ep-foS">
-                                                                <rect key="frame" x="20" y="32.5" width="309" height="17"/>
+                                                                <rect key="frame" x="20" y="32.5" width="309" height="19"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                                 <color key="textColor" name="text_gray"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ibU-Yu-4ux">
-                                                                <rect key="frame" x="337" y="20" width="41" height="20"/>
+                                                                <rect key="frame" x="337" y="21" width="41" height="20"/>
                                                                 <color key="backgroundColor" name="main_ yellow"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="20" id="iu7-RH-vXR"/>
@@ -607,8 +605,8 @@
                                         </subviews>
                                         <color key="backgroundColor" name="main_background"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="491.5" id="C47-1X-Ez8"/>
                                             <constraint firstAttribute="trailing" secondItem="Ppc-hB-G0W" secondAttribute="trailing" constant="8" id="Pba-Xg-9db"/>
+                                            <constraint firstAttribute="height" constant="491.5" id="g8g-LF-aHV"/>
                                             <constraint firstItem="Ppc-hB-G0W" firstAttribute="leading" secondItem="wb9-U5-NPe" secondAttribute="leading" constant="8" id="oyg-Ov-rSm"/>
                                             <constraint firstAttribute="bottom" secondItem="Ppc-hB-G0W" secondAttribute="bottom" constant="8" id="wPF-XB-tHg"/>
                                             <constraint firstItem="Ppc-hB-G0W" firstAttribute="top" secondItem="wb9-U5-NPe" secondAttribute="top" constant="8" id="xYe-CJ-ogq"/>
@@ -837,7 +835,7 @@
                         <outlet property="finishView" destination="Qbg-CS-iT5" id="Dk1-AB-R5p"/>
                         <outlet property="gpsButton" destination="dCQ-TO-oCG" id="PCx-Z5-qpF"/>
                         <outlet property="headerView" destination="FyE-lD-DUw" id="og1-qI-jkP"/>
-                        <outlet property="heightInfoView" destination="C47-1X-Ez8" id="wE7-3r-k21"/>
+                        <outlet property="heightInfoView" destination="g8g-LF-aHV" id="Cgm-Le-aiY"/>
                         <outlet property="heightViewTableView" destination="5FH-Ao-kPk" id="aLV-Tg-oeJ"/>
                         <outlet property="infoBarView" destination="wb9-U5-NPe" id="2hr-4A-vG0"/>
                         <outlet property="pinView" destination="cRT-Va-5ll" id="4dx-0e-wEU"/>
