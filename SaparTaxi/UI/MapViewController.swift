@@ -131,6 +131,7 @@ class MapViewController: UIViewController {
                 updateCoordinate(coord: coord, moveCamera: true)
             }
             
+            setStartBar()
             
             finishAddressesTableView?.reloadData()
         }
