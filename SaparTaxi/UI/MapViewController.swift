@@ -62,11 +62,13 @@ class MapViewController: UIViewController {
     
     private var coordinate: CLLocationCoordinate2D?
     private func updateCoordinate(coord: CLLocationCoordinate2D, moveCamera: Bool) {
+        guard coord != coordinate else { return }
         coordinate = coord
         if moveCamera {
             let frame = pinView?.superview?.frame ?? view.bounds
             let padding = UIEdgeInsets(top: frame.minY, left: 0, bottom: view.bounds.maxY - frame.maxY, right: 0)
             let options = CameraOptions(center: coordinate, padding: padding, zoom: 15)
+            skipCameraMove = true
             mapView.mapboxMap.setCamera(to: options)
         }
         geocodeCurrentCoordinate()
@@ -76,6 +78,7 @@ class MapViewController: UIViewController {
             oldValue?.invalidate()
         }
     }
+    private var skipCameraMove = false
     
     var order = Order()
     
@@ -86,10 +89,14 @@ class MapViewController: UIViewController {
         set {
             order.startLocation = newValue
         
-            whereLabel?.isHidden = true
-            whereView?.isHidden = false
+            whereLabel?.isHidden = (newValue != nil)
+            whereView?.isHidden = (newValue == nil)
             whereNameLabel?.text = startAddress?.address
             whereDescrLabel?.text = startAddress?.desc
+            
+            if let coord = newValue?.coordinate {
+                updateCoordinate(coord: coord, moveCamera: true)
+            }
         }
     }
     
@@ -100,29 +107,25 @@ class MapViewController: UIViewController {
         set {
             order.destinations = newValue
             
-            if finishAddresses.count > 0 && finishAddresses.count < 3 {
-                plusAddressButton?.isHidden = false
-            }
-            else {
-                plusAddressButton?.isHidden = true
-            }
+            let count = finishAddresses.count
+            plusAddressButton?.isHidden = count >= 3
             
-            if finishAddresses.count > 0 {
-                calculatePaymentButton?.isEnabled = true
-                calculatePaymentButton?.alpha = 1
-            }
-            else {
-                calculatePaymentButton?.isEnabled = false
-                calculatePaymentButton?.alpha = 0.6
-            }
+            calculatePaymentButton?.isEnabled = count > 0
+            calculatePaymentButton?.alpha = count > 0 ? 1 : 0.6
             
-            gpsButton?.isHidden = true
-            finishLabel?.isHidden = true
-            finishView?.isHidden = false
+            gpsButton?.isHidden = count > 0
+            finishLabel?.isHidden = count > 0
+            finishView?.isHidden = count == 0
             finishNameLabel?.text = finishAddresses.first?.address
             finishDescrLabel?.text = finishAddresses.first?.desc
             
+            pinView?.superview?.isHidden = count > 0
+            
             requestAndDrawRoute()
+            if count == 0, let coord = startAddress?.coordinate {
+                coordinate = nil
+                updateCoordinate(coord: coord, moveCamera: true)
+            }
             
             finishAddressesTableView?.reloadData()
         }
@@ -184,6 +187,10 @@ class MapViewController: UIViewController {
         view.insertSubview(mapView, at: 0)
         
         mapView.mapboxMap.onEvery(event: .cameraChanged, handler: { [weak self] event in
+            if self?.skipCameraMove == true {
+                self?.skipCameraMove = false
+                return
+            }
             self?.setupCoordinateTimer()
         })
         
@@ -195,7 +202,9 @@ class MapViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
         heightViewTableView?.constant = 0
-        updateLocation()        
+        if startAddress == nil {
+            updateLocation()
+        }
     }
     
     //MARK: - Actions
@@ -231,12 +240,15 @@ class MapViewController: UIViewController {
                     self?.finishAddresses.append(address)
                 }
             }
-            screen.location = order.startLocation
+            if start {
+                screen.location = order.startLocation
+            }
             navigationController?.pushViewController(screen, animated: true)
         }
     }
     
     @IBAction func pushScreenPayment() {
+        guard let startLocation = order.startLocation else { return }
         if let screen = PaymentViewController.loadFromStoryboard(name: "Main") {
             screen.completion = { [weak self] price in
                 self?.price = price?.price
@@ -244,7 +256,6 @@ class MapViewController: UIViewController {
             }
             var arrLoc = [Location]()
             arrLoc = finishAddresses
-            guard let startLocation = order.startLocation else { return }
             arrLoc.insert(startLocation, at: 0)
             screen.arrLoc = arrLoc
             
@@ -275,11 +286,19 @@ class MapViewController: UIViewController {
     
     private func geocodeCurrentCoordinate() {
         guard let coordinate = coordinate else { return }
+        
+        if coordinate == startAddress?.coordinate {
+            addressLabel?.text = startAddress?.address
+            addressLabel?.isHidden = false
+            addressActivity?.isHidden = true
+            return
+        }
+        
         addressLabel?.isHidden = true
         addressActivity?.isHidden = false
         GeocodingService.getAddress(coordinate: coordinate) { [weak self] coord, address in
             guard let self = self, self.coordinate == coord else { return }
-            let addr = address ?? "неизвестное место"
+            let addr = address ?? GeocodingService.addressPlaceholder
             self.addressLabel?.text = addr
             self.addressLabel?.isHidden = false
             self.addressActivity?.isHidden = true
@@ -296,6 +315,7 @@ class MapViewController: UIViewController {
     
     private func obtainCoordinateUnderPin() {
         guard let pinView = pinView, let pinContainer = pinView.superview else { return }
+        guard finishAddresses.count == 0 else { return }
         
         let point = CGPoint(x: pinView.frame.midX, y: pinView.frame.maxY)
         let mapPoint = mapView.convert(point, from: pinContainer)
@@ -303,19 +323,74 @@ class MapViewController: UIViewController {
         updateCoordinate(coord: coord, moveCamera: false)
     }
     
+    //MARK: - Route
+    
     private func requestAndDrawRoute() {
         let dest = finishAddresses
-        guard let start = startAddress, dest.count > 0 else { return }
+        guard let start = startAddress, dest.count > 0 else {
+            addLine(coordinates: [])
+            addCircleAnnotations(coordinates: [])
+            return
+        }
+        
         var locations = [start]
         locations.append(contentsOf: dest)
         
         OpenStreetMapService.getRoute(locations: locations) { [weak self] coordinates in
-            var line = PolylineAnnotation(lineCoordinates: coordinates)
-            line.lineColor = StyleColor(UIColor(named: "main_blue") ?? .blue)
-            line.lineWidth = 5
-            let manager = self?.mapView.annotations.makePolylineAnnotationManager()
-            manager?.annotations = [line]
+            self?.drawRoute(coordinates: coordinates)
         }
+    }
+    
+    private func drawRoute(coordinates: [CLLocationCoordinate2D]) {
+        addLine(coordinates: coordinates)
+        addCircleAnnotations(coordinates: coordinates)
+        zoomMapToFit(coordinates: coordinates)
+    }
+    
+    private func zoomMapToFit(coordinates: [CLLocationCoordinate2D]) {
+        let lats = coordinates.map({$0.latitude})
+        let lons = coordinates.map({$0.longitude})
+        guard let minLat = lats.min(), let maxLat = lats.max(), let minLon = lons.min(), let maxLon = lons.max() else { return }
+        
+        let rect = pinView?.superview?.frame ?? mapView.bounds
+        let bounds = CoordinateBounds(southwest: CLLocationCoordinate2D(latitude: minLat, longitude: minLon), northeast: CLLocationCoordinate2D(latitude: maxLat, longitude: maxLon))
+        let padding = UIEdgeInsets(top: 50, left: 20, bottom: mapView.bounds.maxY - rect.maxY, right: 20)
+        let camera = mapView.mapboxMap.camera(for: bounds, padding: padding, bearing: 0, pitch: 0)
+        mapView.mapboxMap.setCamera(to: camera)
+    }
+    
+    private func addLine(coordinates: [CLLocationCoordinate2D]) {
+        let manager = mapView.annotations.makePolylineAnnotationManager(id: "line")
+        guard coordinates.count > 1 else {
+            manager.annotations = []
+            return
+        }
+        var line = PolylineAnnotation(lineCoordinates: coordinates)
+        line.lineColor = StyleColor(UIColor(named: "main_blue") ?? .blue)
+        line.lineWidth = 5
+        manager.annotations = [line]
+    }
+    
+    private func addCircleAnnotations(coordinates: [CLLocationCoordinate2D]) {
+        
+        let manager = mapView.annotations.makePointAnnotationManager(id: "point")
+//        let img = UIImage(systemName: "mappin")?.withTintColor(.red, renderingMode: .alwaysOriginal)
+        let img = UIImage(named: "pin_icon")
+        guard let first = coordinates.first, let last = coordinates.last, let img = img else {
+            manager.annotations = []
+            return
+        }
+        
+        var startAnnotation = PointAnnotation(coordinate: first)
+        startAnnotation.image = .init(image: img, name: "start_pin")
+        startAnnotation.iconAnchor = .bottom
+        startAnnotation.iconColor = StyleColor(UIColor.red)
+
+        var endAnnotation = PointAnnotation(coordinate: last)
+        endAnnotation.image = .init(image: img, name: "end_pin")
+        endAnnotation.iconAnchor = .bottom
+        
+        manager.annotations = [startAnnotation, endAnnotation]
     }
     
     //MARK: - Bottom bar
@@ -393,11 +468,23 @@ class MapViewController: UIViewController {
                 
             }
         case .ended:
-            runningAnimators.forEach { $0.continueAnimation(withTimingParameters: nil, durationFactor: 0) }
+            commitBarAnimation()
         default:
             break
         }
-    }    
+    }
+    
+    private func commitBarAnimation() {
+        runningAnimators.forEach { $0.continueAnimation(withTimingParameters: nil, durationFactor: 0) }
+    }
+    
+    //MARK: - Destinations table view
+    
+    func addRecognizer() {
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
+        swipeDown.direction = UISwipeGestureRecognizer.Direction.down
+        self.view.addGestureRecognizer(swipeDown)
+    }
     
     func showAllAddresses() {
         heightViewTableView?.constant = self.heightCellTableView * CGFloat(self.finishAddresses.count)
@@ -405,15 +492,6 @@ class MapViewController: UIViewController {
             self.darkenedView?.alpha = 1
             self.view.layoutIfNeeded()
         })
-    }
-    
-    
-    //MARK: - 
-    
-    func addRecognizer() {
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
-        swipeDown.direction = UISwipeGestureRecognizer.Direction.down
-        self.view.addGestureRecognizer(swipeDown)
     }
     
     @objc func respondToSwipeGesture() {
@@ -432,14 +510,14 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: indentifire, for: indexPath)
-        let listCell = cell as? AddressCell
+        guard let listCell = cell as? AddressCell else { return cell }
         
         let address = finishAddresses[indexPath.row]
-        listCell?.addressNameLabel?.text = address.address
-        listCell?.addressDiscrLabel?.text = address.desc
-        listCell?.deleteButton?.tag = indexPath.row
-        listCell?.deleteButton?.removeTarget(self, action: nil, for: .touchUpInside)
-        listCell?.deleteButton?.addTarget(self, action:#selector(deleteCell(_:)), for: .touchUpInside)
+        listCell.addressNameLabel?.text = address.address
+        listCell.addressDiscrLabel?.text = address.desc
+        listCell.deleteButton?.tag = indexPath.row
+        listCell.deleteButton?.removeTarget(self, action: nil, for: .touchUpInside)
+        listCell.deleteButton?.addTarget(self, action:#selector(deleteCell(_:)), for: .touchUpInside)
 
         return cell
     }
@@ -450,7 +528,7 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate{
     }
 }
 
-class  AddressCell: UITableViewCell {
+class AddressCell: UITableViewCell {
     @IBOutlet weak var addressNameLabel: UILabel?
     @IBOutlet weak var addressDiscrLabel: UILabel?
     @IBOutlet weak var deleteButton: UIButton?

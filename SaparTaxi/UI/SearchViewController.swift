@@ -20,22 +20,34 @@ class SearchViewController: UIViewController {
    
     var addresses = [Location]() {
         didSet {
-            DispatchQueue.main.async {
-                self.resaltSearchTableView?.reloadData()
-            }
+            resaltSearchTableView?.reloadData()
         }
     }
     
     var completion: ((Location)->Void)?
     var location: Location?
     
-    var timer = Timer()
-    let delay = 0.5
+    var timer: Timer? {
+        didSet {
+            oldValue?.invalidate()
+        }
+    }
+    
+    deinit {
+        timer = nil
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchAddress?.text = location?.address
+        let str = location?.address
+        if str != GeocodingService.addressPlaceholder {
+            searchAddress?.text = str
+        }
+        if location == nil {
+            searchAddress?.placeholder = "Куда"
+        }
+        
         searchAddress?.delegate = self
         resaltSearchTableView?.tableFooterView = UIView()
     }
@@ -48,7 +60,8 @@ class SearchViewController: UIViewController {
     }
     
     @objc func geocodingRequest() {
-        guard let coordinate = location?.coordinate, let textSearch = searchAddress?.text else { return }
+        let coordinate = location?.coordinate
+        let textSearch = searchAddress?.text ?? ""
         GeocodingService.getPlaces(string: textSearch, center: coordinate) { [weak self] (locations) in
             self?.addresses = locations
         }
@@ -57,7 +70,7 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        timer.invalidate()
+        let delay = 0.5
         timer = Timer.scheduledTimer(timeInterval: delay, target: self, selector: #selector(geocodingRequest), userInfo: nil, repeats: false)
     }
 }

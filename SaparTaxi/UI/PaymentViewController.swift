@@ -27,6 +27,7 @@ class PaymentViewController: UIViewController {
     @IBOutlet weak var titleSwichLabel: UILabel?
     @IBOutlet var companionSwich: UISwitch?
     @IBOutlet weak var addCompanionView: UIView?
+    @IBOutlet weak var doneButton: UIButton?
 
     @IBOutlet var plusButton: UIButton?
     @IBOutlet var amountLabel: UILabel?
@@ -39,7 +40,6 @@ class PaymentViewController: UIViewController {
     let heightCellTableView: CGFloat = 44
     var amountCompanion = 1
     var averagePrice: Double = 0.0
-    var resultPrice: Double = 0.0
     let indentifire = "TaxiCell"
     
     var prices = [TaxiService]() {
@@ -49,6 +49,7 @@ class PaymentViewController: UIViewController {
             setParamSlider()
             loadPriceView?.isHidden = true
             allTaxiTableView?.reloadData()
+            doneButton?.isEnabled = (averagePrice > 0)
         }
     }
     
@@ -79,6 +80,11 @@ class PaymentViewController: UIViewController {
     //MARK: -
     
     func getAveragePrice() {
+        if prices.count == 0 {
+            averagePrice = 0
+            return
+        }
+        
         var sumPrices = 0.0
         for i in prices {
             sumPrices += i.price
@@ -105,7 +111,7 @@ class PaymentViewController: UIViewController {
         else {
             titleSliderLabel?.text = "ВАША ЦЕНА:"
         }
-        resultPrice = Double(sender.value)
+        
         averagePriceLabel?.text = String(format: "%.0f", sender.value)  + " ₸"
     }
     
@@ -138,9 +144,9 @@ class PaymentViewController: UIViewController {
     }
     
     @IBAction func getPriceOnMapViewController(_ sender: UIButton) {
-        let price = resultPrice
-        let resultPrice = ResultPrice(amountCompanion: amountCompanion, price: price)
-        completion?(resultPrice)
+        let price = Double(priceSlider?.value ?? 0)
+        let result = ResultPrice(amountCompanion: amountCompanion, price: price)
+        completion?(result)
         navigationController?.popViewController(animated: true)
     }
     

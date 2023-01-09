@@ -73,7 +73,7 @@ class ApiService: NSObject {
             let response = try? decoder.decode([String:[Price]].self, from: data)
             var result = [TaxiService]()
             response?.forEach({ (key, value) in
-                if let item = value.first, let price = Double(item.price.filter("0123456789.,".contains)) {
+                if let item = value.first, let price = Double(item.price.filter("0123456789.,".contains)), price.isNormal, !price.isNaN, price.isFinite {
                     var service = TaxiService(name: key, price: price)
                     service.oneOffer = (value.count == 1)
                     result.append(service)

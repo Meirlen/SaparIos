@@ -9,14 +9,15 @@ import CoreLocation
 
 class GeocodingService: NSObject {
 
+    static let addressPlaceholder = "неизвестное место"
+    
     static func getAddress(coordinate: CLLocationCoordinate2D, completion:((CLLocationCoordinate2D, String?)->Void)?) {
         //TODO: Cache & round
         ApiService.getAddress(coordinate: coordinate, completion: completion)
     }
     
-    static func getPlaces(string: String, center: CLLocationCoordinate2D, completion:(([Location])->Void)?) {
-        let delta = 0.3
-        let boxStr = String(format: "%f,%f~%f,%f", center.latitude-delta, center.longitude-delta, center.latitude+delta, center.longitude+delta)
+    static func getPlaces(string: String, center: CLLocationCoordinate2D?, completion:(([Location])->Void)?) {
+        let boxStr = "71.18039008452863,50.90665734917379~71.71611852833287,51.29543426733995"
         guard var urlComp = URLComponents(string: "https://suggest-maps.yandex.ru/suggest-geo") else { return }
         urlComp.queryItems = [
             URLQueryItem(name: "apikey", value: "a4018892-4411-4709-97ea-6881ac674715"),
