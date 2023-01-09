@@ -97,6 +97,9 @@ class MapViewController: UIViewController {
             if let coord = newValue?.coordinate {
                 updateCoordinate(coord: coord, moveCamera: true)
             }
+            
+            requestAndDrawRoute()
+            setStartBar()
         }
     }
     
@@ -116,7 +119,8 @@ class MapViewController: UIViewController {
             gpsButton?.isHidden = count > 0
             finishLabel?.isHidden = count > 0
             finishView?.isHidden = count == 0
-            finishNameLabel?.text = finishAddresses.first?.address
+            let addresses = finishAddresses.map({$0.address}).joined(separator: ", ")
+            finishNameLabel?.text = addresses
             finishDescrLabel?.text = finishAddresses.first?.desc
             
             pinView?.superview?.isHidden = count > 0
@@ -126,6 +130,7 @@ class MapViewController: UIViewController {
                 coordinate = nil
                 updateCoordinate(coord: coord, moveCamera: true)
             }
+            
             
             finishAddressesTableView?.reloadData()
         }
@@ -139,17 +144,7 @@ class MapViewController: UIViewController {
             guard let newValue = newValue else { return }
             
             order.price = newValue
-            
-            if !setOrderScreen {
-                setOrderBar()
-                setOrderScreen = true
-            }
-            
-            whereButton?.isEnabled = false
-            entranceButton?.isEnabled = false
-            finishButton?.isEnabled = false
-            plusAddressButton?.isHidden = true
-            
+            setOrderBar()
             priceButton?.setTitle(String(format: "%.0f", newValue) + " ₸", for: .normal)
         }
     }
@@ -158,7 +153,6 @@ class MapViewController: UIViewController {
     var resultPriceViewHeight: CGFloat = 0
     var buttonOrderViewHeight: CGFloat = 0
     let spacingStackView: CGFloat = 8
-    var setOrderScreen = false
     
     let indentifire = "AddressCell"
     
