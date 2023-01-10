@@ -145,7 +145,8 @@ class PaymentViewController: UIViewController {
     
     @IBAction func getPriceOnMapViewController(_ sender: UIButton) {
         let price = Double(priceSlider?.value ?? 0)
-        let result = ResultPrice(amountCompanion: amountCompanion, price: price)
+        let amount = companionSwich?.isOn == true ? amountCompanion : 1
+        let result = ResultPrice(amountCompanion: amount, price: price)
         completion?(result)
         navigationController?.popViewController(animated: true)
     }

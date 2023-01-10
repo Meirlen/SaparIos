@@ -206,8 +206,8 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func setFinish(_ sender: UIButton) {
-        if finishAddresses.count == 0 {
-            pushScreenSearch(start: false)
+        if finishAddresses.count < 2 {
+            pushScreenSearch(start: false, discardCurrent: true)
         }
         else if finishAddresses.count > 1 {
             showAllAddresses()
@@ -218,14 +218,18 @@ class MapViewController: UIViewController {
         pushScreenSearch(start: false)
     }
     
-    func pushScreenSearch(start: Bool) {
+    func pushScreenSearch(start: Bool, discardCurrent: Bool = false) {
         if let screen = SearchViewController.loadFromStoryboard(name: "Main") {
             screen.completion = { [weak self] address in
                 if start {
                     self?.startAddress = address
                 }
                 else {
-                    self?.finishAddresses.append(address)
+                    if discardCurrent {
+                        self?.finishAddresses = [address]
+                    } else {
+                        self?.finishAddresses.append(address)
+                    }
                 }
             }
             if start {

@@ -1109,14 +1109,6 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dEt-5b-AYS">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="814"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hyt-2f-tmS">
-                                                <rect key="frame" x="8" y="753.5" width="398" height="50.5"/>
-                                                <string key="text">Мы в Sapar, за справедливую цену, для того чтобы определить примерную оплату мы анализируем все цены на такси в городе по вашему маршрту </string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                                <string key="userLabel">Мы в Sapar, за справедливую цену, для того чтобы определить примерную оплату мы анализируем все цены на такси в городе по вашему маршрту</string>
-                                            </label>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="w6t-ut-xrN">
                                                 <rect key="frame" x="188.5" y="388.5" width="37" height="37"/>
                                             </activityIndicatorView>
@@ -1125,6 +1117,14 @@
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hyt-2f-tmS">
+                                                <rect key="frame" x="8" y="753.5" width="398" height="50.5"/>
+                                                <string key="text">Мы в Sapar, за справедливую цену, для того чтобы определить примерную оплату мы анализируем все цены на такси в городе по вашему маршрту </string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                                <string key="userLabel">Мы в Sapar, за справедливую цену, для того чтобы определить примерную оплату мы анализируем все цены на такси в городе по вашему маршрту</string>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" name="main_background"/>
@@ -1176,26 +1176,26 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tlq-xe-1xk">
+                                                        <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tlq-xe-1xk">
                                                             <rect key="frame" x="8" y="7" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="BHq-15-ipY"/>
                                                                 <constraint firstAttribute="width" constant="30" id="TBc-NY-bgK"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QYf-cN-Biz">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QYf-cN-Biz">
                                                             <rect key="frame" x="48" y="4" width="307" height="18"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yj8-4b-bau">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yj8-4b-bau">
                                                             <rect key="frame" x="48" y="27" width="307" height="14.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <color key="textColor" name="text_gray"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XGc-L6-NFG">
+                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" ambiguous="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XGc-L6-NFG">
                                                             <rect key="frame" x="365" y="12" width="41" height="20"/>
                                                             <color key="backgroundColor" name="main_ yellow"/>
                                                             <constraints>
@@ -1279,6 +1279,7 @@
                         <outlet property="plusButton" destination="upG-ZS-tHp" id="g1M-9J-9to"/>
                         <outlet property="priceSlider" destination="NXh-NJ-6yH" id="rpq-aA-bct"/>
                         <outlet property="titleSliderLabel" destination="FQM-eP-4Hx" id="JSQ-ad-F7Z"/>
+                        <outlet property="titleSwichLabel" destination="jcK-Rq-aKN" id="PY1-rI-Iav"/>
                         <outlet property="topConstr" destination="iQI-UO-ALb" id="plh-Xi-1fV"/>
                     </connections>
                 </viewController>
