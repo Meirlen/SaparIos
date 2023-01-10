@@ -60,8 +60,9 @@ struct PlacesResponse: Codable {
     
     var locations: [Location] {
         return results.compactMap { place in
-            guard let lat = place.lat, let lon = place.lon else { return nil }
-            return Location(coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lon), address: place.name, desc: place.desc ?? "")
+            guard let coord = place.coordinate, place.insideKrg else { return nil }
+            let desc = place.desc ?? ""
+            return Location(coordinate: coord, address: place.name, desc: desc)
         }
     }
 }
@@ -71,6 +72,20 @@ struct Place: Codable {
     var desc: String?
     var lat: Double?
     var lon: Double?
+    
+    var insideKrg: Bool {
+        guard let coord = coordinate else { return false }
+        let minLat = 49.67348
+        let maxLat = 50.15371
+        let minLon = 72.84576
+        let maxLon = 73.442825
+        return (coord.latitude <= maxLat && coord.latitude >= minLat) && (coord.longitude <= maxLon && coord.longitude >= minLon)
+    }
+    
+    var coordinate: CLLocationCoordinate2D? {
+        guard let lat = lat, let lon = lon else { return nil }
+        return CLLocationCoordinate2D(latitude: lat, longitude: lon)
+    }
 }
 
 extension CLPlacemark {
